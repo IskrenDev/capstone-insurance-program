@@ -50,7 +50,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: app.jar
-          path: backend/target/app.jar
+          path: backend/target/insurance-program.jar
 
   push-to-docker-hub:
     runs-on: ubuntu-latest
