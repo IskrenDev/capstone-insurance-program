@@ -80,8 +80,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: push-to-docker-hub
     environment:
-      name: Pokemon TCG Sim
-      url: https://pokemon-tcg-sim.onrender.com/
+      name: Insurance Program
+      url: https://insurance-program.onrender.com
     steps:
       - name: Trigger Render.com Deployment
         run: |
