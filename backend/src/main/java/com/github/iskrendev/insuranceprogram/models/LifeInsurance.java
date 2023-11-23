@@ -21,11 +21,11 @@ public record LifeInsurance(
         String telephone,
         String email,
         InsuranceType type,
-        int duration,
-        BigDecimal rate,
+        Integer duration,
+        BigDecimal paymentPerMonth,
         LocalDate startDate,
         LocalDate endDate,
-        boolean hasHealthIssues,
+        Boolean hasHealthIssues,
         String healthConditionDetails
 
 ) implements Insurance {

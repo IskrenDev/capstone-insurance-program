@@ -21,13 +21,13 @@ public record PropertyInsurance(
         String telephone,
         String email,
         InsuranceType type,
-        int duration,
-        BigDecimal rate,
+        Integer duration,
+        BigDecimal paymentPerMonth,
         LocalDate startDate,
         LocalDate endDate,
         String propertyType,
         String propertyAddress,
-        int constructionYear
+        Integer constructionYear
 
 ) implements Insurance {
 

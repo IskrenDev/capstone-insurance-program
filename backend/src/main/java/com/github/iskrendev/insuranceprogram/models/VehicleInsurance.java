@@ -21,13 +21,13 @@ public record VehicleInsurance(
         String telephone,
         String email,
         InsuranceType type,
-        int duration,
-        BigDecimal rate,
+        Integer duration,
+        BigDecimal paymentPerMonth,
         LocalDate startDate,
         LocalDate endDate,
         String vehicleMake,
         String vehicleModel,
-        int vehicleYear,
+        Integer vehicleYear,
         String licensePlateNumber
 
 ) implements Insurance {
