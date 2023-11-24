@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Builder
-@Document(collection = "vehicle insurance")
+@Document(collection = "vehicle_insurance")
 public record VehicleInsurance(
         @Id
         String id,
@@ -31,9 +31,52 @@ public record VehicleInsurance(
         String licensePlateNumber
 
 ) implements Insurance {
-
     @Override
-    public BigDecimal calculateInsuranceAmount(int duration, BigDecimal rate) {
-        return BigDecimal.valueOf(duration).multiply(rate);
+    public String getFirstName() {
+        return firstName;
+    }
+    @Override
+    public String getFamilyName() {
+        return familyName;
+    }
+    @Override
+    public String getZipCode() {
+        return zipCode;
+    }
+    @Override
+    public String getCity() {
+        return city;
+    }
+    @Override
+    public String getTelephone() {
+        return telephone;
+    }
+    @Override
+    public String getEmail() {
+        return email;
+    }
+    @Override
+    public InsuranceType getType() {
+        return type;
+    }
+    @Override
+    public Integer getDuration() {
+        return duration;
+    }
+    @Override
+    public BigDecimal getPaymentPerMonth() {
+        return paymentPerMonth;
+    }
+    @Override
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+    @Override
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+    @Override
+    public BigDecimal calculateInsuranceAmount(int duration, BigDecimal paymentPerMonth) {
+        return BigDecimal.valueOf(duration).multiply(paymentPerMonth);
     }
 }

@@ -1,15 +1,23 @@
 package com.github.iskrendev.insuranceprogram.controller;
 
+import com.github.iskrendev.insuranceprogram.common.Insurance;
 import com.github.iskrendev.insuranceprogram.models.*;
 import com.github.iskrendev.insuranceprogram.service.InsuranceService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/insurances")
 public class InsuranceController {
     private InsuranceService insuranceService;
+    @GetMapping("")
+    public List<Insurance> getAllInsurances() {
+        return insuranceService.getAllInsurances();
+    }
+
     @PostMapping("/life")
     public LifeInsurance addLifeInsurance(@RequestBody DTOLifeInsurance lifeInsurance) {
         LifeInsurance newLifeInsurance = LifeInsurance.builder()
