@@ -1,9 +1,12 @@
 package com.github.iskrendev.insuranceprogram.controller;
 
 import com.github.iskrendev.insuranceprogram.common.Insurance;
+import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsurance;
 import com.github.iskrendev.insuranceprogram.models.*;
 import com.github.iskrendev.insuranceprogram.service.InsuranceService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +19,11 @@ public class InsuranceController {
     @GetMapping("")
     public List<Insurance> getAllInsurances() {
         return insuranceService.getAllInsurances();
+    }
+
+    @GetMapping("/{id}")
+    public Insurance getInsuranceById(@PathVariable String id) {
+        return insuranceService.getInsuranceById(id);
     }
 
     @PostMapping("/life")
@@ -79,5 +87,10 @@ public class InsuranceController {
                 .licensePlateNumber(vehicleInsurance.licensePlateNumber())
                 .build();
         return insuranceService.addVehicleInsurance(newVehicleInsurance);
+    }
+
+    @ExceptionHandler(NoSuchInsurance.class)
+    public ResponseEntity<String> handleNoSuchInsuranceException(NoSuchInsurance e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 }

@@ -1,6 +1,7 @@
 package com.github.iskrendev.insuranceprogram.service;
 
 import com.github.iskrendev.insuranceprogram.common.Insurance;
+import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsurance;
 import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
 import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
 import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +33,23 @@ public class InsuranceService {
         allInsurances.addAll(vehicleInsurances);
 
         return allInsurances;
+    }
+
+    public Insurance getInsuranceById(String id) {
+        Optional<LifeInsurance> resultLife = lifeInsuranceRepo.findById(id);
+        Optional<PropertyInsurance> resultProperty = propertyInsuranceRepo.findById(id);
+        Optional<VehicleInsurance> resultVehicle = vehicleInsuranceRepo.findById(id);
+
+        if (resultLife.isPresent()) {
+            return resultLife.get();
+        }
+        if (resultProperty.isPresent()) {
+            return resultProperty.get();
+        }
+        if (resultVehicle.isPresent()) {
+            return resultVehicle.get();
+        }
+        throw new NoSuchInsurance();
     }
 
     public LifeInsurance addLifeInsurance(LifeInsurance lifeInsurance) {
