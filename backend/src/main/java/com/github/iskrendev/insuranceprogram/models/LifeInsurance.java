@@ -63,7 +63,7 @@ public record LifeInsurance(
     }
     @Override
     public BigDecimal getPaymentPerMonth() {
-        return paymentPerMonth();
+        return paymentPerMonth;
     }
     @Override
     public LocalDate getStartDate() {
