@@ -2,6 +2,7 @@ package com.github.iskrendev.insuranceprogram.service;
 
 import com.github.iskrendev.insuranceprogram.common.Insurance;
 import com.github.iskrendev.insuranceprogram.enums.InsuranceType;
+import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsurance;
 import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
 import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
 import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -87,6 +89,41 @@ class InsuranceServiceTest {
         verify(mockLifeInsuranceRepo).findAll();
         verify(mockPropertyInsuranceRepo).findAll();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void getInsuranceById_whenIdIsValid_thenReturnInsurance() {
+        //GIVEN
+        LifeInsurance expected = LifeInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("12345")
+                .city("Testcity")
+                .telephone("012345")
+                .email("testmail@example.com")
+                .type(InsuranceType.LIFE)
+                .duration(48)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2028, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+        //WHEN
+        when(mockLifeInsuranceRepo.findById(expected.id())).thenReturn(Optional.of(expected));
+        //THEN
+        Insurance actual = insuranceService.getInsuranceById(expected.id());
+        verify(mockLifeInsuranceRepo).findById(expected.id());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getInsuranceById_whenIdIsNotValid_thenThrowError() {
+        assertThrows(NoSuchInsurance.class, () -> insuranceService.getInsuranceById("1"));
+        verify(mockLifeInsuranceRepo).findById("1");
+        verify(mockPropertyInsuranceRepo).findById("1");
+        verify(mockVehicleInsuranceRepo).findById("1");
     }
     @Test
     void addLifeInsurance_whenDataIsComplete_thenReturnCompleteInsurance() {

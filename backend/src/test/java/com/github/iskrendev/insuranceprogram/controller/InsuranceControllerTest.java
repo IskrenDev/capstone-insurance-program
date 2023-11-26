@@ -5,7 +5,6 @@ import com.github.iskrendev.insuranceprogram.common.Insurance;
 import com.github.iskrendev.insuranceprogram.enums.InsuranceType;
 import com.github.iskrendev.insuranceprogram.models.*;
 import com.github.iskrendev.insuranceprogram.repository.LifeInsuranceRepo;
-import com.github.iskrendev.insuranceprogram.repository.PropertyInsuranceRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,9 +31,7 @@ class InsuranceControllerTest {
     private ObjectMapper objectMapper;
     @Autowired
     private LifeInsuranceRepo lifeInsuranceRepo;
-    @Autowired
-    private PropertyInsuranceRepo propertyInsuranceRepo;
-    private static final String BASE_URI_ALL = "/api/insurances";
+    private static final String BASE_URI = "/api/insurances";
     private static final String BASE_URI_LIFE = "/api/insurances/life";
     private static final String BASE_URI_PROPERTY = "/api/insurances/property";
     private static final String BASE_URI_VEHICLE = "/api/insurances/vehicle";
@@ -42,7 +39,7 @@ class InsuranceControllerTest {
     @Test
     @DirtiesContext
     void getAllInsurances_whenNoInsuranceIsInList_thenReturnEmptyList() throws Exception {
-        mockMvc.perform(get(BASE_URI_ALL))
+        mockMvc.perform(get(BASE_URI))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
     }
@@ -101,9 +98,43 @@ class InsuranceControllerTest {
                   .andExpect(status().isOk())
                   .andExpect(content().json(propertyInsuranceAsJson));
 
-          mockMvc.perform(get(BASE_URI_ALL))
+          mockMvc.perform(get(BASE_URI))
                   .andExpect(status().isOk())
                   .andExpect(content().json(allInsuranceAsJson));
+    }
+    @Test
+    @DirtiesContext
+    void getInsuranceById_whenIdIsValid_thenReturnInsurance() throws Exception {
+        LifeInsurance lifeInsurance = LifeInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("12345")
+                .city("Testcity")
+                .telephone("012345")
+                .email("testmail@example.com")
+                .type(InsuranceType.LIFE)
+                .duration(48)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2028, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+
+        String newLifeInsuranceAsJson = objectMapper.writeValueAsString(lifeInsurance);
+        lifeInsuranceRepo.save(lifeInsurance);
+        mockMvc.perform(get(BASE_URI + "/" + lifeInsurance.id()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(newLifeInsuranceAsJson));
+    }
+
+    @Test
+    @DirtiesContext
+    void getInsuranceById_whenIdIsNotValid_thenThrowException() throws Exception {
+        mockMvc.perform(get(BASE_URI + "/invalidId"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("There is no insurance with this id"));
     }
 
     @Test
