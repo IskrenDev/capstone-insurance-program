@@ -2,7 +2,7 @@ package com.github.iskrendev.insuranceprogram.service;
 
 import com.github.iskrendev.insuranceprogram.common.Insurance;
 import com.github.iskrendev.insuranceprogram.enums.InsuranceType;
-import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsurance;
+import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
 import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
 import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
 import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
@@ -120,7 +120,7 @@ class InsuranceServiceTest {
 
     @Test
     void getInsuranceById_whenIdIsNotValid_thenThrowError() {
-        assertThrows(NoSuchInsurance.class, () -> insuranceService.getInsuranceById("1"));
+        assertThrows(NoSuchInsuranceException.class, () -> insuranceService.getInsuranceById("1"));
         verify(mockLifeInsuranceRepo).findById("1");
         verify(mockPropertyInsuranceRepo).findById("1");
         verify(mockVehicleInsuranceRepo).findById("1");

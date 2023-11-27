@@ -1,7 +1,7 @@
 package com.github.iskrendev.insuranceprogram.service;
 
 import com.github.iskrendev.insuranceprogram.common.Insurance;
-import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsurance;
+import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
 import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
 import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
 import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
@@ -49,7 +49,7 @@ public class InsuranceService {
         if (resultVehicle.isPresent()) {
             return resultVehicle.get();
         }
-        throw new NoSuchInsurance();
+        throw new NoSuchInsuranceException();
     }
 
     public LifeInsurance addLifeInsurance(LifeInsurance lifeInsurance) {
