@@ -26,7 +26,7 @@ public class PropertyInsuranceController {
         return propertyInsuranceService.getPropertyInsuranceById(id);
     }
 
-    @PostMapping("")
+    @PostMapping
     public PropertyInsurance addPropertyInsurance(@RequestBody DTOPropertyInsurance propertyInsurance) {
         PropertyInsurance newPropertyInsurance = PropertyInsurance.builder()
                 .firstName(propertyInsurance.firstName())
