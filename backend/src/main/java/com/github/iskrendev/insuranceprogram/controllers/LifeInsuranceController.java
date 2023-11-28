@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/life")
 public class LifeInsuranceController {
     private LifeInsuranceService lifeInsuranceService;
-    @GetMapping("")
+    @GetMapping
     public List<LifeInsurance> getAllLifeInsurances() {
         return lifeInsuranceService.getAllLifeInsurances();
     }
