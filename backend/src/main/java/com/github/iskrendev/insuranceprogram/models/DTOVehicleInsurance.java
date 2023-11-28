@@ -1,6 +1,5 @@
 package com.github.iskrendev.insuranceprogram.models;
 
-import com.github.iskrendev.insuranceprogram.common.Insurance;
 import com.github.iskrendev.insuranceprogram.enums.InsuranceType;
 import lombok.Builder;
 
@@ -23,52 +22,7 @@ public record DTOVehicleInsurance(String firstName,
                                   Integer vehicleYear,
                                   String licensePlateNumber
 
-) implements Insurance {
-    @Override
-    public String getFirstName() {
-        return firstName;
-    }
-    @Override
-    public String getFamilyName() {
-        return familyName;
-    }
-    @Override
-    public String getZipCode() {
-        return zipCode;
-    }
-    @Override
-    public String getCity() {
-        return city;
-    }
-    @Override
-    public String getTelephone() {
-        return telephone;
-    }
-    @Override
-    public String getEmail() {
-        return email;
-    }
-    @Override
-    public InsuranceType getType() {
-        return type;
-    }
-    @Override
-    public Integer getDuration() {
-        return duration;
-    }
-    @Override
-    public BigDecimal getPaymentPerMonth() {
-        return paymentPerMonth;
-    }
-    @Override
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-    @Override
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-    @Override
+) {
     public BigDecimal calculateInsuranceAmount(int duration, BigDecimal paymentPerMonth) {
         return BigDecimal.valueOf(duration).multiply(paymentPerMonth);
     }
