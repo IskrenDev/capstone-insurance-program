@@ -1,8 +1,7 @@
 package com.github.iskrendev.insuranceprogram.controllers;
 
 import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
-import com.github.iskrendev.insuranceprogram.models.DTOVehicleInsurance;
-import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
+import com.github.iskrendev.insuranceprogram.models.*;
 import com.github.iskrendev.insuranceprogram.services.VehicleInsuranceService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/vehicle")
 public class VehicleInsuranceController {
     private VehicleInsuranceService vehicleInsuranceService;
-    @GetMapping("")
+    @GetMapping
     public List<VehicleInsurance> getAllVehicleInsurances() {
         return vehicleInsuranceService.getAllVehicleInsurances();
     }
@@ -27,7 +26,7 @@ public class VehicleInsuranceController {
     }
 
     @PostMapping
-    public VehicleInsurance addVehicleInsurance(@RequestBody DTOVehicleInsurance vehicleInsurance) {
+    public VehicleInsurance addVehicleInsurance(@RequestBody VehicleInsuranceDTO vehicleInsurance) {
         VehicleInsurance newVehicleInsurance = VehicleInsurance.builder()
                 .firstName(vehicleInsurance.firstName())
                 .familyName(vehicleInsurance.familyName())
@@ -46,6 +45,11 @@ public class VehicleInsuranceController {
                 .licensePlateNumber(vehicleInsurance.licensePlateNumber())
                 .build();
         return vehicleInsuranceService.addVehicleInsurance(newVehicleInsurance);
+    }
+
+    @PutMapping("/{id}")
+    public VehicleInsurance updateVehicleInsurance(@PathVariable String id, @RequestBody VehicleInsuranceUpdateDTO vehicleInsuranceUpdateDTO) {
+        return vehicleInsuranceService.updateVehicleInsurance(id, vehicleInsuranceUpdateDTO);
     }
 
     @ExceptionHandler(NoSuchInsuranceException.class)
