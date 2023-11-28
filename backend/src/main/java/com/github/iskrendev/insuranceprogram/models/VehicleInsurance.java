@@ -4,13 +4,12 @@ import com.github.iskrendev.insuranceprogram.enums.InsuranceType;
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import com.github.iskrendev.insuranceprogram.common.Insurance;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Builder
-@Document(collection = "vehicle insurance")
+@Document(collection = "vehicle_insurance")
 public record VehicleInsurance(
         @Id
         String id,
@@ -30,10 +29,8 @@ public record VehicleInsurance(
         Integer vehicleYear,
         String licensePlateNumber
 
-) implements Insurance {
-
-    @Override
-    public BigDecimal calculateInsuranceAmount(int duration, BigDecimal rate) {
-        return BigDecimal.valueOf(duration).multiply(rate);
+) {
+    public BigDecimal calculateInsuranceAmount(int duration, BigDecimal paymentPerMonth) {
+        return BigDecimal.valueOf(duration).multiply(paymentPerMonth);
     }
 }

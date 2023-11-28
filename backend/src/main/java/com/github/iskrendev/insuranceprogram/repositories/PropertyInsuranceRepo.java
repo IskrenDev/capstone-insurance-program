@@ -1,4 +1,4 @@
-package com.github.iskrendev.insuranceprogram.repository;
+package com.github.iskrendev.insuranceprogram.repositories;
 
 import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
 import org.springframework.data.mongodb.repository.MongoRepository;
