@@ -28,6 +28,7 @@ public class PropertyInsuranceService {
     public PropertyInsurance updatePropertyInsurance(String id, PropertyInsuranceUpdateDTO propertyInsuranceUpdateDTO) {
         getPropertyInsuranceById(id);
         PropertyInsurance propertyInsuranceToUpdate = PropertyInsurance.builder()
+                .id(id)
                 .firstName(propertyInsuranceUpdateDTO.firstName())
                 .familyName(propertyInsuranceUpdateDTO.familyName())
                 .zipCode(propertyInsuranceUpdateDTO.zipCode())

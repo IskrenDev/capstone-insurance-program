@@ -28,6 +28,7 @@ public class LifeInsuranceService {
     public LifeInsurance updateLifeInsurance(String id, LifeInsuranceUpdateDTO lifeInsuranceUpdateDTO) {
         getLifeInsuranceById(id);
         LifeInsurance lifeInsuranceToUpdate = LifeInsurance.builder()
+                .id(id)
                 .firstName(lifeInsuranceUpdateDTO.firstName())
                 .familyName(lifeInsuranceUpdateDTO.familyName())
                 .zipCode(lifeInsuranceUpdateDTO.zipCode())
