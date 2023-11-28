@@ -26,7 +26,7 @@ public class VehicleInsuranceController {
         return vehicleInsuranceService.getVehicleInsuranceById(id);
     }
 
-    @PostMapping("")
+    @PostMapping
     public VehicleInsurance addVehicleInsurance(@RequestBody DTOVehicleInsurance vehicleInsurance) {
         VehicleInsurance newVehicleInsurance = VehicleInsurance.builder()
                 .firstName(vehicleInsurance.firstName())
