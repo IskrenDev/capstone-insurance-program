@@ -2,6 +2,7 @@ package com.github.iskrendev.insuranceprogram.services;
 
 import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
 import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
+import com.github.iskrendev.insuranceprogram.models.PropertyInsuranceUpdateDTO;
 import com.github.iskrendev.insuranceprogram.repositories.PropertyInsuranceRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,26 @@ public class PropertyInsuranceService {
 
     public PropertyInsurance addPropertyInsurance(PropertyInsurance propertyInsurance) {
         return propertyInsuranceRepo.save(propertyInsurance);
+    }
+
+    public PropertyInsurance updatePropertyInsurance(String id, PropertyInsuranceUpdateDTO propertyInsuranceUpdateDTO) {
+        getPropertyInsuranceById(id);
+        PropertyInsurance propertyInsuranceToUpdate = PropertyInsurance.builder()
+                .firstName(propertyInsuranceUpdateDTO.firstName())
+                .familyName(propertyInsuranceUpdateDTO.familyName())
+                .zipCode(propertyInsuranceUpdateDTO.zipCode())
+                .city(propertyInsuranceUpdateDTO.city())
+                .telephone(propertyInsuranceUpdateDTO.telephone())
+                .email(propertyInsuranceUpdateDTO.email())
+                .duration(propertyInsuranceUpdateDTO.duration())
+                .paymentPerMonth(propertyInsuranceUpdateDTO.paymentPerMonth())
+                .startDate(propertyInsuranceUpdateDTO.startDate())
+                .endDate(propertyInsuranceUpdateDTO.endDate())
+                .propertyType(propertyInsuranceUpdateDTO.propertyType())
+                .propertyAddress(propertyInsuranceUpdateDTO.propertyAddress())
+                .constructionYear(propertyInsuranceUpdateDTO.constructionYear())
+                .build();
+
+        return propertyInsuranceRepo.save(propertyInsuranceToUpdate);
     }
 }

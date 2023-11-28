@@ -1,8 +1,7 @@
 package com.github.iskrendev.insuranceprogram.controllers;
 
 import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
-import com.github.iskrendev.insuranceprogram.models.DTOPropertyInsurance;
-import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
+import com.github.iskrendev.insuranceprogram.models.*;
 import com.github.iskrendev.insuranceprogram.services.PropertyInsuranceService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/property")
 public class PropertyInsuranceController {
     private PropertyInsuranceService propertyInsuranceService;
-    @GetMapping("")
+    @GetMapping
     public List<PropertyInsurance> getAllPropertyInsurances() {
         return propertyInsuranceService.getAllPropertyInsurances();
     }
@@ -27,7 +26,7 @@ public class PropertyInsuranceController {
     }
 
     @PostMapping
-    public PropertyInsurance addPropertyInsurance(@RequestBody DTOPropertyInsurance propertyInsurance) {
+    public PropertyInsurance addPropertyInsurance(@RequestBody PropertyInsuranceDTO propertyInsurance) {
         PropertyInsurance newPropertyInsurance = PropertyInsurance.builder()
                 .firstName(propertyInsurance.firstName())
                 .familyName(propertyInsurance.familyName())
@@ -45,6 +44,11 @@ public class PropertyInsuranceController {
                 .constructionYear(propertyInsurance.constructionYear())
                 .build();
         return propertyInsuranceService.addPropertyInsurance(newPropertyInsurance);
+    }
+
+    @PutMapping("/{id}")
+    public PropertyInsurance updatePropertyInsurance(@PathVariable String id, @RequestBody PropertyInsuranceUpdateDTO propertyInsuranceUpdateDTO) {
+        return propertyInsuranceService.updatePropertyInsurance(id, propertyInsuranceUpdateDTO);
     }
 
     @ExceptionHandler(NoSuchInsuranceException.class)
