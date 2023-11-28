@@ -1,8 +1,9 @@
 package com.github.iskrendev.insuranceprogram.controllers;
 
 import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
-import com.github.iskrendev.insuranceprogram.models.DTOLifeInsurance;
+import com.github.iskrendev.insuranceprogram.models.LifeInsuranceDTO;
 import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
+import com.github.iskrendev.insuranceprogram.models.LifeInsuranceUpdateDTO;
 import com.github.iskrendev.insuranceprogram.services.LifeInsuranceService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class LifeInsuranceController {
     }
 
     @PostMapping("")
-    public LifeInsurance addLifeInsurance(@RequestBody DTOLifeInsurance lifeInsurance) {
+    public LifeInsurance addLifeInsurance(@RequestBody LifeInsuranceDTO lifeInsurance) {
         LifeInsurance newLifeInsurance = LifeInsurance.builder()
                 .firstName(lifeInsurance.firstName())
                 .familyName(lifeInsurance.familyName())
@@ -44,6 +45,11 @@ public class LifeInsuranceController {
                 .healthConditionDetails(lifeInsurance.healthConditionDetails())
                 .build();
         return lifeInsuranceService.addLifeInsurance(newLifeInsurance);
+    }
+
+    @PutMapping("/{id}")
+    public LifeInsurance updateLifeInsurance(@PathVariable String id, @RequestBody LifeInsuranceUpdateDTO lifeInsuranceUpdateDTO) {
+        return lifeInsuranceService.updateLifeInsurance(id, lifeInsuranceUpdateDTO);
     }
 
     @ExceptionHandler(NoSuchInsuranceException.class)
