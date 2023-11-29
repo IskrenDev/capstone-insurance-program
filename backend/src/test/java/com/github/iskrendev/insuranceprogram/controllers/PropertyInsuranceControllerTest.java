@@ -2,8 +2,7 @@ package com.github.iskrendev.insuranceprogram.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.iskrendev.insuranceprogram.enums.InsuranceType;
-import com.github.iskrendev.insuranceprogram.models.DTOPropertyInsurance;
-import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
+import com.github.iskrendev.insuranceprogram.models.*;
 import com.github.iskrendev.insuranceprogram.repositories.PropertyInsuranceRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +16,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -50,6 +47,7 @@ class PropertyInsuranceControllerTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.PROPERTY)
@@ -80,6 +78,8 @@ class PropertyInsuranceControllerTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
+                .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.PROPERTY)
                 .duration(48)
@@ -109,11 +109,13 @@ class PropertyInsuranceControllerTest {
     @Test
     @DirtiesContext
     void addPropertyInsurance_whenDataIsComplete_thenReturnCompleteInsurance() throws Exception {
-        DTOPropertyInsurance newPropertyInsurance = DTOPropertyInsurance.builder()
+        PropertyInsuranceDTO newPropertyInsurance = PropertyInsuranceDTO.builder()
                 .firstName("TestFirstName")
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
+                .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.PROPERTY)
                 .duration(48)
@@ -136,11 +138,12 @@ class PropertyInsuranceControllerTest {
     @Test
     @DirtiesContext
     void addPropertyInsurance_whenJustOneFieldIsFilledOut_thenReturnNullForEmptyFields() throws Exception {
-        DTOPropertyInsurance newPropertyInsurance = DTOPropertyInsurance.builder()
+        PropertyInsuranceDTO newPropertyInsurance = PropertyInsuranceDTO.builder()
                 .firstName("TestFirstName")
                 .familyName(null)
                 .zipCode(null)
                 .city(null)
+                .address(null)
                 .telephone(null)
                 .email(null)
                 .type(null)
@@ -159,5 +162,106 @@ class PropertyInsuranceControllerTest {
                         .content(propertyInsuranceAsJson))
                 .andExpect(status().isOk())
                 .andExpect(content().json(propertyInsuranceAsJson));
+    }
+
+    @Test
+    @DirtiesContext
+    void updatePropertyInsurance_whenInsuranceIdExistsInDb_thenReturnUpdatedInsurance() throws Exception {
+        PropertyInsurance propertyInsuranceBefore = PropertyInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("12345")
+                .city("Testcity")
+                .address("Test str. 456")
+                .telephone("012345")
+                .email("testmail@example.com")
+                .type(InsuranceType.PROPERTY)
+                .duration(48)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2028, 1, 1))
+                .propertyType("House")
+                .propertyAddress("Test str. 1")
+                .constructionYear(1994)
+                .build();
+
+        PropertyInsurance updatedPropertyInsurance = PropertyInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .type(InsuranceType.PROPERTY)
+                .duration(72)
+                .paymentPerMonth(BigDecimal.valueOf(90))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2030, 1, 1))
+                .propertyType("House")
+                .propertyAddress("Test str. 1")
+                .constructionYear(1994)
+                .build();
+
+        PropertyInsuranceUpdateDTO propertyInsuranceUpdateDTO = PropertyInsuranceUpdateDTO.builder()
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .duration(72)
+                .paymentPerMonth(BigDecimal.valueOf(90))
+                .endDate(LocalDate.of(2030, 1, 1))
+                .propertyType("House")
+                .propertyAddress("Test str. 1")
+                .constructionYear(1994)
+                .build();
+
+        String updatedPropertyInsuranceAsJson = objectMapper.writeValueAsString(updatedPropertyInsurance);
+        String propertyInsuranceUpdateDTOAsJson = objectMapper.writeValueAsString(propertyInsuranceUpdateDTO);
+
+        propertyInsuranceRepo.save(propertyInsuranceBefore);
+
+        mockMvc.perform(get(BASE_URI + "/" + propertyInsuranceBefore.id()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(propertyInsuranceBefore)));
+
+        mockMvc.perform(put(BASE_URI + "/" + updatedPropertyInsurance.id())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedPropertyInsuranceAsJson))
+                .andExpect(status().isOk())
+                .andExpect(content().json(propertyInsuranceUpdateDTOAsJson));
+    }
+
+    @Test
+    @DirtiesContext
+    void updatePropertyInsurance_whenInsuranceIdDoesNotExistsInDb_thenThrowException() throws Exception {
+        PropertyInsuranceUpdateDTO propertyInsuranceUpdateDTO = PropertyInsuranceUpdateDTO.builder()
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .duration(72)
+                .paymentPerMonth(BigDecimal.valueOf(90))
+                .endDate(LocalDate.of(2030, 1, 1))
+                .propertyType("House")
+                .propertyAddress("Test str. 1")
+                .constructionYear(1994)
+                .build();
+
+        String propertyInsuranceUpdateDTOasJson = objectMapper.writeValueAsString(propertyInsuranceUpdateDTO);
+
+        mockMvc.perform(put(BASE_URI + "/invalidId")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(propertyInsuranceUpdateDTOasJson))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("There is no insurance with this id"));
     }
 }
