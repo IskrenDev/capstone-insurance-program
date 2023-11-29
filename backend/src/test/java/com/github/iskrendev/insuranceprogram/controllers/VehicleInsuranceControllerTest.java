@@ -2,8 +2,7 @@ package com.github.iskrendev.insuranceprogram.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.iskrendev.insuranceprogram.enums.InsuranceType;
-import com.github.iskrendev.insuranceprogram.models.DTOVehicleInsurance;
-import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
+import com.github.iskrendev.insuranceprogram.models.*;
 import com.github.iskrendev.insuranceprogram.repositories.VehicleInsuranceRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +16,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class VehicleInsuranceControllerTest {
@@ -49,6 +47,7 @@ class VehicleInsuranceControllerTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .email("testmail@example.com")
                 .type(InsuranceType.VEHICLE)
                 .duration(12)
@@ -79,6 +78,7 @@ class VehicleInsuranceControllerTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .email("testmail@example.com")
                 .type(InsuranceType.VEHICLE)
                 .duration(12)
@@ -91,11 +91,11 @@ class VehicleInsuranceControllerTest {
                 .licensePlateNumber("AB 123 CD")
                 .build();
 
-        String newPropertyInsuranceAsJson = objectMapper.writeValueAsString(vehicleInsurance);
+        String newVehicleInsuranceAsJson = objectMapper.writeValueAsString(vehicleInsurance);
         vehicleInsuranceRepo.save(vehicleInsurance);
         mockMvc.perform(get(BASE_URI + "/" + vehicleInsurance.id()))
                 .andExpect(status().isOk())
-                .andExpect(content().json(newPropertyInsuranceAsJson));
+                .andExpect(content().json(newVehicleInsuranceAsJson));
     }
 
     @Test
@@ -109,11 +109,12 @@ class VehicleInsuranceControllerTest {
     @Test
     @DirtiesContext
     void addVehicleInsurance_whenDataIsComplete_thenReturnCompleteInsurance() throws Exception {
-        DTOVehicleInsurance newVehicleInsurance = DTOVehicleInsurance.builder()
+        VehicleInsuranceDTO newVehicleInsurance = VehicleInsuranceDTO.builder()
                 .firstName("TestFirstName")
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .email("testmail@example.com")
                 .type(InsuranceType.VEHICLE)
                 .duration(12)
@@ -137,11 +138,12 @@ class VehicleInsuranceControllerTest {
     @Test
     @DirtiesContext
     void addVehicleInsurance_whenJustOneFieldIsFilledOut_thenReturnNullForEmptyFields() throws Exception {
-        DTOVehicleInsurance newVehicleInsurance = DTOVehicleInsurance.builder()
+        VehicleInsuranceDTO newVehicleInsurance = VehicleInsuranceDTO.builder()
                 .firstName("TestFirstName")
                 .familyName(null)
                 .zipCode(null)
                 .city(null)
+                .address(null)
                 .telephone(null)
                 .email(null)
                 .duration(null)
@@ -161,5 +163,110 @@ class VehicleInsuranceControllerTest {
                         .content(vehicleInsuranceAsJson))
                 .andExpect(status().isOk())
                 .andExpect(content().json(vehicleInsuranceAsJson));
+    }
+
+    @Test
+    @DirtiesContext
+    void updateVehicleInsurance_whenInsuranceIdExistsInDb_thenReturnUpdatedInsurance() throws Exception {
+        VehicleInsurance vehicleInsuranceBefore = VehicleInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("12345")
+                .city("Testcity")
+                .address("Test str. 123")
+                .telephone("012345")
+                .email("testmail@example.com")
+                .type(InsuranceType.VEHICLE)
+                .duration(12)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2025, 1, 1))
+                .vehicleMake("Testmake")
+                .vehicleModel("Testmodel")
+                .vehicleYear(2015)
+                .licensePlateNumber("AB 123 CD")
+                .build();
+
+        VehicleInsurance updatedVehicleInsurance = VehicleInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .type(InsuranceType.VEHICLE)
+                .duration(24)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2026, 1, 1))
+                .vehicleMake("Testmake")
+                .vehicleModel("Testmodel")
+                .vehicleYear(2015)
+                .licensePlateNumber("AB 123 CD")
+                .build();
+
+        VehicleInsuranceUpdateDTO vehicleInsuranceUpdateDTO = VehicleInsuranceUpdateDTO.builder()
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .duration(24)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .endDate(LocalDate.of(2026, 1, 1))
+                .vehicleMake("Testmake")
+                .vehicleModel("Testmodel")
+                .vehicleYear(2015)
+                .licensePlateNumber("AB 123 CD")
+                .build();
+
+        String updatedVehicleInsuranceAsJson = objectMapper.writeValueAsString(updatedVehicleInsurance);
+        String vehicleInsuranceUpdateDTOAsJson = objectMapper.writeValueAsString(vehicleInsuranceUpdateDTO);
+
+        vehicleInsuranceRepo.save(vehicleInsuranceBefore);
+
+        mockMvc.perform(get(BASE_URI + "/" + vehicleInsuranceBefore.id()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(vehicleInsuranceBefore)));
+
+        mockMvc.perform(put(BASE_URI + "/" + updatedVehicleInsurance.id())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedVehicleInsuranceAsJson))
+                .andExpect(status().isOk())
+                .andExpect(content().json(vehicleInsuranceUpdateDTOAsJson));
+    }
+
+    @Test
+    @DirtiesContext
+    void updateVehicleInsurance_whenInsuranceIdDoesNotExistsInDb_thenThrowException() throws Exception {
+        VehicleInsuranceUpdateDTO vehicleInsuranceUpdateDTO = VehicleInsuranceUpdateDTO.builder()
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .duration(24)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .endDate(LocalDate.of(2026, 1, 1))
+                .vehicleMake("Testmake")
+                .vehicleModel("Testmodel")
+                .vehicleYear(2015)
+                .licensePlateNumber("AB 123 CD")
+                .build();
+
+        String vehicleInsuranceUpdateDTOasJson = objectMapper.writeValueAsString(vehicleInsuranceUpdateDTO);
+
+        mockMvc.perform(put(BASE_URI + "/invalidId")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(vehicleInsuranceUpdateDTOasJson))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("There is no insurance with this id"));
     }
 }
