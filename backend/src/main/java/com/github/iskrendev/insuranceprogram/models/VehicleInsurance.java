@@ -17,6 +17,7 @@ public record VehicleInsurance(
         String familyName,
         String zipCode,
         String city,
+        String address,
         String telephone,
         String email,
         InsuranceType type,

@@ -8,17 +8,15 @@ import java.time.LocalDate;
 
 @Builder
 public record PropertyInsuranceUpdateDTO(
-        @Id
-        String id,
         String firstName,
         String familyName,
         String zipCode,
         String city,
+        String address,
         String telephone,
         String email,
         Integer duration,
         BigDecimal paymentPerMonth,
-        LocalDate startDate,
         LocalDate endDate,
         String propertyType,
         String propertyAddress,
