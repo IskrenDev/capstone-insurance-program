@@ -2,8 +2,9 @@ package com.github.iskrendev.insuranceprogram.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.iskrendev.insuranceprogram.enums.InsuranceType;
-import com.github.iskrendev.insuranceprogram.models.DTOLifeInsurance;
+import com.github.iskrendev.insuranceprogram.models.LifeInsuranceDTO;
 import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
+import com.github.iskrendev.insuranceprogram.models.LifeInsuranceUpdateDTO;
 import com.github.iskrendev.insuranceprogram.repositories.LifeInsuranceRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -50,6 +49,8 @@ class LifeInsuranceControllerTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
+                .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.LIFE)
                 .duration(48)
@@ -78,6 +79,7 @@ class LifeInsuranceControllerTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.LIFE)
@@ -107,11 +109,13 @@ class LifeInsuranceControllerTest {
     @Test
     @DirtiesContext
     void addLifeInsurance_whenDataIsComplete_thenReturnCompleteInsurance() throws Exception {
-        DTOLifeInsurance newLifeInsurance = DTOLifeInsurance.builder()
+        LifeInsuranceDTO newLifeInsurance = LifeInsuranceDTO.builder()
                 .firstName("TestFirstName")
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
+                .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.LIFE)
                 .duration(48)
@@ -133,11 +137,12 @@ class LifeInsuranceControllerTest {
     @Test
     @DirtiesContext
     void addLifeInsurance_whenJustOneFieldIsFilledOut_thenReturnNullForEmptyFields() throws Exception {
-        DTOLifeInsurance newLifeInsurance = DTOLifeInsurance.builder()
+        LifeInsuranceDTO newLifeInsurance = LifeInsuranceDTO.builder()
                 .firstName("TestFirstName")
                 .familyName(null)
                 .zipCode(null)
                 .city(null)
+                .address(null)
                 .telephone(null)
                 .email(null)
                 .type(null)
@@ -154,5 +159,102 @@ class LifeInsuranceControllerTest {
                         .content(lifeInsuranceAsJson))
                 .andExpect(status().isOk())
                 .andExpect(content().json(lifeInsuranceAsJson));
+    }
+
+    @Test
+    @DirtiesContext
+    void updateLifeInsurance_whenInsuranceIdExistsInDb_thenReturnUpdatedInsurance() throws Exception {
+        LifeInsurance lifeInsuranceBefore = LifeInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("12345")
+                .city("Testcity")
+                .address("Test str. 123")
+                .telephone("012345")
+                .email("testmail@example.com")
+                .type(InsuranceType.LIFE)
+                .duration(48)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2028, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+
+        LifeInsurance updatedLifeInsurance = LifeInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .type(InsuranceType.LIFE)
+                .duration(72)
+                .paymentPerMonth(BigDecimal.valueOf(90))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2030, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+
+        LifeInsuranceUpdateDTO lifeInsuranceUpdateDTO = LifeInsuranceUpdateDTO.builder()
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .duration(72)
+                .paymentPerMonth(BigDecimal.valueOf(90))
+                .endDate(LocalDate.of(2030, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+
+        String updatedLifeInsuranceAsJson = objectMapper.writeValueAsString(updatedLifeInsurance);
+        String lifeInsuranceUpdateDTOAsJson = objectMapper.writeValueAsString(lifeInsuranceUpdateDTO);
+
+        lifeInsuranceRepo.save(lifeInsuranceBefore);
+
+        mockMvc.perform(get(BASE_URI + "/" + lifeInsuranceBefore.id()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(lifeInsuranceBefore)));
+
+        mockMvc.perform(put(BASE_URI + "/" + updatedLifeInsurance.id())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedLifeInsuranceAsJson))
+                .andExpect(status().isOk())
+                .andExpect(content().json(lifeInsuranceUpdateDTOAsJson));
+    }
+
+    @Test
+    @DirtiesContext
+    void updateLifeInsurance_whenInsuranceIdDoesNotExistsInDb_thenThrowException() throws Exception {
+        LifeInsuranceUpdateDTO lifeInsuranceUpdateDTO = LifeInsuranceUpdateDTO.builder()
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .duration(72)
+                .paymentPerMonth(BigDecimal.valueOf(90))
+                .endDate(LocalDate.of(2030, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+
+        String lifeInsuranceUpdateDTOasJson = objectMapper.writeValueAsString(lifeInsuranceUpdateDTO);
+
+        mockMvc.perform(put(BASE_URI + "/invalidId")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(lifeInsuranceUpdateDTOasJson))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("There is no insurance with this id"));
     }
 }

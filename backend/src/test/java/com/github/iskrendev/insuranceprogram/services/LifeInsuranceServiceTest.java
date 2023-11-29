@@ -3,6 +3,7 @@ package com.github.iskrendev.insuranceprogram.services;
 import com.github.iskrendev.insuranceprogram.enums.InsuranceType;
 import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
 import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
+import com.github.iskrendev.insuranceprogram.models.LifeInsuranceUpdateDTO;
 import com.github.iskrendev.insuranceprogram.repositories.LifeInsuranceRepo;
 import org.junit.jupiter.api.Test;
 
@@ -35,6 +36,7 @@ class LifeInsuranceServiceTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.LIFE)
@@ -64,6 +66,7 @@ class LifeInsuranceServiceTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.LIFE)
@@ -97,6 +100,7 @@ class LifeInsuranceServiceTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.LIFE)
@@ -124,6 +128,7 @@ class LifeInsuranceServiceTest {
                 .familyName(null)
                 .zipCode(null)
                 .city(null)
+                .address(null)
                 .telephone(null)
                 .email(null)
                 .type(null)
@@ -140,5 +145,94 @@ class LifeInsuranceServiceTest {
         LifeInsurance actual = lifeInsuranceService.addLifeInsurance(expected);
         verify(mockLifeInsuranceRepo).save(expected);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateLifeInsurance_whenInsuranceIdExistsInDb_thenReturnUpdatedInsurance() {
+        // GIVEN
+        LifeInsurance lifeInsuranceBefore = LifeInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("12345")
+                .city("Testcity")
+                .address("Test str. 123")
+                .telephone("012345")
+                .email("testmail@example.com")
+                .type(InsuranceType.LIFE)
+                .duration(48)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2028, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+
+        LifeInsurance updatedLifeInsurance = LifeInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .type(InsuranceType.LIFE)
+                .duration(72)
+                .paymentPerMonth(BigDecimal.valueOf(90))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2030, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+
+        LifeInsuranceUpdateDTO lifeInsuranceUpdateDTO = LifeInsuranceUpdateDTO.builder()
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .duration(72)
+                .paymentPerMonth(BigDecimal.valueOf(90))
+                .endDate(LocalDate.of(2030, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+
+        when(mockLifeInsuranceRepo.findById("1")).thenReturn(Optional.of(lifeInsuranceBefore));
+        when(mockLifeInsuranceRepo.save(any(LifeInsurance.class))).thenReturn(updatedLifeInsurance);
+
+        // WHEN
+        LifeInsurance actual = lifeInsuranceService.updateLifeInsurance(updatedLifeInsurance.id(), lifeInsuranceUpdateDTO);
+
+        // THEN
+        verify(mockLifeInsuranceRepo).findById("1");
+        verify(mockLifeInsuranceRepo).save(updatedLifeInsurance);
+        assertEquals(updatedLifeInsurance, actual);
+    }
+
+    @Test
+    void updateLifeInsurance_whenInsuranceIdDoesNotExistsInDb_thenThrowException() {
+        LifeInsuranceUpdateDTO lifeInsuranceUpdateDTO = LifeInsuranceUpdateDTO.builder()
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .duration(72)
+                .paymentPerMonth(BigDecimal.valueOf(90))
+                .endDate(LocalDate.of(2030, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+
+        when(mockLifeInsuranceRepo.findById("invalidId")).thenReturn(Optional.empty());
+        assertThrows(NoSuchInsuranceException.class, () -> lifeInsuranceService.updateLifeInsurance("invalidId", lifeInsuranceUpdateDTO));
+        verify(mockLifeInsuranceRepo).findById("invalidId");
+        verify(mockLifeInsuranceRepo, never()).save(any(LifeInsurance.class));
     }
 }
