@@ -34,6 +34,7 @@ public class LifeInsuranceController {
                 .familyName(lifeInsurance.familyName())
                 .zipCode(lifeInsurance.zipCode())
                 .city(lifeInsurance.city())
+                .address(lifeInsurance.address())
                 .telephone(lifeInsurance.telephone())
                 .email(lifeInsurance.email())
                 .type(lifeInsurance.type())

@@ -32,6 +32,7 @@ public class VehicleInsuranceController {
                 .familyName(vehicleInsurance.familyName())
                 .zipCode(vehicleInsurance.zipCode())
                 .city(vehicleInsurance.city())
+                .address(vehicleInsurance.address())
                 .telephone(vehicleInsurance.telephone())
                 .email(vehicleInsurance.email())
                 .type(vehicleInsurance.type())

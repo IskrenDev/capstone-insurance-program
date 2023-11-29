@@ -32,6 +32,7 @@ public class PropertyInsuranceController {
                 .familyName(propertyInsurance.familyName())
                 .zipCode(propertyInsurance.zipCode())
                 .city(propertyInsurance.city())
+                .address(propertyInsurance.address())
                 .telephone(propertyInsurance.telephone())
                 .email(propertyInsurance.email())
                 .type(propertyInsurance.type())
