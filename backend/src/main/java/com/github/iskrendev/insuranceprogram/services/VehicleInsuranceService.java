@@ -1,6 +1,7 @@
 package com.github.iskrendev.insuranceprogram.services;
 
 import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
+import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
 import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
 import com.github.iskrendev.insuranceprogram.models.VehicleInsuranceUpdateDTO;
 import com.github.iskrendev.insuranceprogram.repositories.VehicleInsuranceRepo;
@@ -26,18 +27,21 @@ public class VehicleInsuranceService {
     }
 
     public VehicleInsurance updateVehicleInsurance(String id, VehicleInsuranceUpdateDTO vehicleInsuranceUpdateDTO) {
-        getVehicleInsuranceById(id);
-        VehicleInsurance vehicleInsuranceToUpdate = VehicleInsurance.builder()
+        VehicleInsurance vehicleInsuranceToUpdate = getVehicleInsuranceById(id);
+
+        VehicleInsurance updatedVehicleInsurance = VehicleInsurance.builder()
                 .id(id)
                 .firstName(vehicleInsuranceUpdateDTO.firstName())
                 .familyName(vehicleInsuranceUpdateDTO.familyName())
                 .zipCode(vehicleInsuranceUpdateDTO.zipCode())
                 .city(vehicleInsuranceUpdateDTO.city())
+                .address(vehicleInsuranceUpdateDTO.address())
                 .telephone(vehicleInsuranceUpdateDTO.telephone())
                 .email(vehicleInsuranceUpdateDTO.email())
+                .type(vehicleInsuranceToUpdate.type())
                 .duration(vehicleInsuranceUpdateDTO.duration())
                 .paymentPerMonth(vehicleInsuranceUpdateDTO.paymentPerMonth())
-                .startDate(vehicleInsuranceUpdateDTO.startDate())
+                .startDate(vehicleInsuranceToUpdate.startDate())
                 .endDate(vehicleInsuranceUpdateDTO.endDate())
                 .vehicleMake(vehicleInsuranceUpdateDTO.vehicleMake())
                 .vehicleModel(vehicleInsuranceUpdateDTO.vehicleModel())
@@ -45,6 +49,6 @@ public class VehicleInsuranceService {
                 .licensePlateNumber(vehicleInsuranceUpdateDTO.licensePlateNumber())
                 .build();
 
-        return vehicleInsuranceRepo.save(vehicleInsuranceToUpdate);
+        return vehicleInsuranceRepo.save(updatedVehicleInsurance);
     }
 }

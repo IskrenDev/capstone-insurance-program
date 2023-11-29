@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class LifeInsuranceService {
@@ -26,23 +27,26 @@ public class LifeInsuranceService {
     }
 
     public LifeInsurance updateLifeInsurance(String id, LifeInsuranceUpdateDTO lifeInsuranceUpdateDTO) {
-        getLifeInsuranceById(id);
-        LifeInsurance lifeInsuranceToUpdate = LifeInsurance.builder()
+        LifeInsurance lifeInsuranceToUpdate = getLifeInsuranceById(id);
+
+        LifeInsurance updatedLifeInsurance = LifeInsurance.builder()
                 .id(id)
                 .firstName(lifeInsuranceUpdateDTO.firstName())
                 .familyName(lifeInsuranceUpdateDTO.familyName())
                 .zipCode(lifeInsuranceUpdateDTO.zipCode())
                 .city(lifeInsuranceUpdateDTO.city())
+                .address(lifeInsuranceUpdateDTO.address())
                 .telephone(lifeInsuranceUpdateDTO.telephone())
                 .email(lifeInsuranceUpdateDTO.email())
+                .type(lifeInsuranceToUpdate.type())
                 .duration(lifeInsuranceUpdateDTO.duration())
                 .paymentPerMonth(lifeInsuranceUpdateDTO.paymentPerMonth())
-                .startDate(lifeInsuranceUpdateDTO.startDate())
+                .startDate(lifeInsuranceToUpdate.startDate())
                 .endDate(lifeInsuranceUpdateDTO.endDate())
                 .hasHealthIssues(lifeInsuranceUpdateDTO.hasHealthIssues())
                 .healthConditionDetails(lifeInsuranceUpdateDTO.healthConditionDetails())
                 .build();
 
-        return lifeInsuranceRepo.save(lifeInsuranceToUpdate);
+        return lifeInsuranceRepo.save(updatedLifeInsurance);
     }
 }
