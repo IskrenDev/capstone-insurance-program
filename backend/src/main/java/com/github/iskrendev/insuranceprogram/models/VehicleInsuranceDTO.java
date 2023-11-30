@@ -6,10 +6,11 @@ import lombok.Builder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 @Builder
-public record DTOVehicleInsurance(String firstName,
+public record VehicleInsuranceDTO(String firstName,
                                   String familyName,
                                   String zipCode,
                                   String city,
+                                  String address,
                                   String telephone,
                                   String email,
                                   InsuranceType type,

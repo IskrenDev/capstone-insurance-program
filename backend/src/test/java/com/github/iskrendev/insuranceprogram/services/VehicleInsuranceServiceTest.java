@@ -3,6 +3,7 @@ package com.github.iskrendev.insuranceprogram.services;
 import com.github.iskrendev.insuranceprogram.enums.InsuranceType;
 import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
 import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
+import com.github.iskrendev.insuranceprogram.models.VehicleInsuranceUpdateDTO;
 import com.github.iskrendev.insuranceprogram.repositories.VehicleInsuranceRepo;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.*;
 class VehicleInsuranceServiceTest {
     private final VehicleInsuranceRepo mockVehicleInsuranceRepo = mock(VehicleInsuranceRepo.class);
     private final VehicleInsuranceService vehicleInsuranceService = new VehicleInsuranceService(mockVehicleInsuranceRepo);
+
     @Test
     void getAllVehicleInsurances_whenNoVehicleInsuranceIsInList_thenReturnEmptyList() {
         when(mockVehicleInsuranceRepo.findAll()).thenReturn(List.of());
@@ -34,6 +36,7 @@ class VehicleInsuranceServiceTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.VEHICLE)
@@ -65,6 +68,7 @@ class VehicleInsuranceServiceTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.VEHICLE)
@@ -100,6 +104,7 @@ class VehicleInsuranceServiceTest {
                 .familyName("TestFamilyName")
                 .zipCode("12345")
                 .city("Testcity")
+                .address("Test str. 123")
                 .telephone("012345")
                 .email("testmail@example.com")
                 .type(InsuranceType.VEHICLE)
@@ -129,6 +134,7 @@ class VehicleInsuranceServiceTest {
                 .familyName(null)
                 .zipCode(null)
                 .city(null)
+                .address(null)
                 .telephone(null)
                 .email(null)
                 .type(null)
@@ -147,5 +153,102 @@ class VehicleInsuranceServiceTest {
         VehicleInsurance actual = vehicleInsuranceService.addVehicleInsurance(expected);
         verify(mockVehicleInsuranceRepo).save(expected);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateVehicleInsurance_whenInsuranceIdExistsInDb_thenReturnUpdatedInsurance() {
+        // GIVEN
+        VehicleInsurance vehicleInsuranceBefore = VehicleInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("12345")
+                .city("Testcity")
+                .address("Test str. 123")
+                .telephone("012345")
+                .email("testmail@example.com")
+                .type(InsuranceType.VEHICLE)
+                .duration(12)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2025, 1, 1))
+                .vehicleMake("Testmake")
+                .vehicleModel("Testmodel")
+                .vehicleYear(2015)
+                .licensePlateNumber("AB 123 CD")
+                .build();
+
+        VehicleInsurance updatedVehicleInsurance = VehicleInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .type(InsuranceType.VEHICLE)
+                .duration(24)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2026, 1, 1))
+                .vehicleMake("Testmake")
+                .vehicleModel("Testmodel")
+                .vehicleYear(2015)
+                .licensePlateNumber("AB 123 CD")
+                .build();
+
+        VehicleInsuranceUpdateDTO vehicleInsuranceUpdateDTO = VehicleInsuranceUpdateDTO.builder()
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .duration(24)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .endDate(LocalDate.of(2026, 1, 1))
+                .vehicleMake("Testmake")
+                .vehicleModel("Testmodel")
+                .vehicleYear(2015)
+                .licensePlateNumber("AB 123 CD")
+                .build();
+
+        when(mockVehicleInsuranceRepo.findById("1")).thenReturn(Optional.of(vehicleInsuranceBefore));
+        when(mockVehicleInsuranceRepo.save(any(VehicleInsurance.class))).thenReturn(updatedVehicleInsurance);
+
+        // WHEN
+        VehicleInsurance actual = vehicleInsuranceService.updateVehicleInsurance(updatedVehicleInsurance.id(), vehicleInsuranceUpdateDTO);
+
+        // THEN
+        verify(mockVehicleInsuranceRepo).findById("1");
+        verify(mockVehicleInsuranceRepo).save(updatedVehicleInsurance);
+        assertEquals(updatedVehicleInsurance, actual);
+    }
+
+    @Test
+    void updateVehicleInsurance_whenInsuranceIdDoesNotExistsInDb_thenThrowException() {
+        VehicleInsuranceUpdateDTO vehicleInsuranceUpdateDTO = VehicleInsuranceUpdateDTO.builder()
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("65432")
+                .city("NewTestCity")
+                .address("Test str. 456")
+                .telephone("044444")
+                .email("testmail@example.com")
+                .duration(24)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .endDate(LocalDate.of(2026, 1, 1))
+                .vehicleMake("Testmake")
+                .vehicleModel("Testmodel")
+                .vehicleYear(2015)
+                .licensePlateNumber("AB 123 CD")
+                .build();
+
+        when(mockVehicleInsuranceRepo.findById("invalidId")).thenReturn(Optional.empty());
+        assertThrows(NoSuchInsuranceException.class, () -> vehicleInsuranceService.updateVehicleInsurance("invalidId", vehicleInsuranceUpdateDTO));
+        verify(mockVehicleInsuranceRepo).findById("invalidId");
+        verify(mockVehicleInsuranceRepo, never()).save(any(VehicleInsurance.class));
     }
 }
