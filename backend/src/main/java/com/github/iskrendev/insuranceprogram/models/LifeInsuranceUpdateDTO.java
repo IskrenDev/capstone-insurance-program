@@ -1,7 +1,6 @@
 package com.github.iskrendev.insuranceprogram.models;
 
 import lombok.Builder;
-import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
