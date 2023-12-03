@@ -24,15 +24,22 @@ a:hover {
 
 body {
   margin: 0;
+  padding: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #d7d7d7;
+  border: 30px solid #007a70;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+h2 {
+  font-size: 36px;
 }
 
 button {
