@@ -29,8 +29,10 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #d7d7d7;
-  border: 30px solid #007a70;
+  border: 30px solid;
+  border-image-source: linear-gradient(to top, #005e54, #008f81);
+  border-image-slice: 1;
+  background: linear-gradient(to bottom, #b9b9b9, #e7e7e7);
 }
 
 h1 {
@@ -70,6 +72,6 @@ button:focus-visible {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background: linear-gradient(to top, #005e54, #008f81);;
   }
 }
