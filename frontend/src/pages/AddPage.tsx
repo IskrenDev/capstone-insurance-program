@@ -1,6 +1,6 @@
 import "./AddPage.css";
 import React, {useState} from 'react';
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {useNavigate} from "react-router-dom";
 
 
@@ -68,7 +68,7 @@ function AddPage() {
             .then(() => {
                 navigate('/')
             })
-            .catch(error => {
+            .catch((error: AxiosError) => {
                 console.error('Error adding data:', error);
             });
     }
