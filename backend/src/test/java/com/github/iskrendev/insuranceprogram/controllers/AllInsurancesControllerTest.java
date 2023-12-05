@@ -76,7 +76,7 @@ class AllInsurancesControllerTest {
         lifeInsuranceRepo.save(lifeInsurance);
 
         PropertyInsurance propertyInsurance = PropertyInsurance.builder()
-                .id("1")
+                .id("2")
                 .firstName("TestFirstName")
                 .familyName("TestFamilyName")
                 .zipCode("12345")
@@ -98,7 +98,7 @@ class AllInsurancesControllerTest {
         propertyInsuranceRepo.save(propertyInsurance);
 
         VehicleInsurance vehicleInsurance = VehicleInsurance.builder()
-                .id("1")
+                .id("3")
                 .firstName("TestFirstName")
                 .familyName("TestFamilyName")
                 .zipCode("12345")
