@@ -1,0 +1,41 @@
+.column-container {
+    display: flex;
+    margin: 0 -10px;
+}
+
+.column {
+    flex: 1;
+    margin: 0 10px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    max-width: 380px;
+    font-size: 18px;
+}
+
+.column h2 {
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 30px;
+}
+
+.column ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.column li {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.column li a {
+    color: #00624d;
+    text-decoration: none;
+}
+
+.column li a:hover {
+    color: #00988b
+}
