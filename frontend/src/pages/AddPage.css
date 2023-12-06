@@ -35,6 +35,10 @@
     margin-bottom: -10px;
 }
 
+.form-section input[name="type"] {
+    visibility: hidden;
+}
+
 .button-container {
     margin-top: 10px;
     text-align: center;

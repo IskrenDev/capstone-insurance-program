@@ -1,91 +1,119 @@
-function FormLabel({ label, name, value, handleOnChange, isRequired, options, textarea, pattern }, {type}: {type: "date" | "number" | "checkbox" | "text" | "email" | "tel"}) {
-    const handleChange = (event) => {
-        const inputValue = event.target.value;
+import {ChangeEvent} from "react";
+import moment from "moment";
 
-        if (type === "checkbox") {
-            // Handle checkbox input
-            handleOnChange(!value);
-            return; // Exit early after handling checkbox change
-        }
-        if (label.toLowerCase().includes("monate")) {
-            // Handle months input
-            const isValidInput = /^\d+$/.test(inputValue) && parseInt(inputValue, 10) >= 0;
-            if (isValidInput) {
-                handleOnChange(inputValue);
-            }
-        } else if (label.toLowerCase().includes("jahr")) {
-            // Handle year input
-            const isValidYear = /^\d{1,4}$/.test(inputValue) && parseInt(inputValue, 10) >= 0;
-            if (isValidYear) {
-                handleOnChange(inputValue);
-            }
-        } else if (label.toLowerCase().includes("beitrag")) {
-            // Handle numeric input for contributions
-            const isValidContribution = /^\d*\.?\d*$/.test(inputValue) && parseFloat(inputValue) >= 0;
-            if (isValidContribution) {
-                handleOnChange(inputValue);
-            }
-        }
-        else if (label.toLowerCase().includes("datum")) {
-            const startDate = new Date(document.getElementById('startDate').value);
-            const endDate = new Date(document.getElementById('endDate').value);
+type FormLabelProps = {
+    label: string;
+    name: string;
+    value?: string | number | readonly string[]
+    handleOnChangeNumber?: (v: number) => void;
+    handleOnChangeText?: (v: string) => void;
+    handleOnChangeCheckbox?: (v: boolean) => void;
+    handleOnChangeDate?: (v: string) => void;
+    isRequired?: boolean;
+    checked?: boolean
+    options?: { value: string; label: string }[];
+    textarea?: boolean;
+    pattern?: string;
+    startDate?: string;
+    endDate?: string;
+    type?: "date" | "number" | "checkbox" | "text" | "email" | "tel";
+}
 
-            if (startDate > endDate) {
-                alert("Start date cannot be after the end date");
+function FormLabel(props: Readonly<FormLabelProps>) {
+    const handleChangeText = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        props.handleOnChangeText(event.target.value);
+    }
+
+    const handleChangeSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+        props.handleOnChangeText(event.target.value);
+
+    }
+
+    const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.type === "checkbox") {
+            props.handleOnChangeCheckbox(event.target.checked);
+        } else if (event.target.type === "number") {
+            if (props.label.toLowerCase().includes("monate")) {
+                const isValidInput = /^\d+$/.test(event.target.value);
+                if (isValidInput) {
+                    props.handleOnChangeNumber(parseInt(event.target.value, 10));
+                }
+            } else if (props.label.toLowerCase().includes("jahr")) {
+                const isValidYear = /^\d{1,4}$/.test(event.target.value) && parseInt(event.target.value, 10) >= 0;
+                if (isValidYear) {
+                    props.handleOnChangeNumber(parseInt(event.target.value, 10));
+                }
+            } else if (props.label.toLowerCase().includes("beitrag")) {
+                const isValidContribution = /^\d*\.?\d*$/.test(event.target.value) && parseFloat(event.target.value) >= 0;
+                if (isValidContribution) {
+                    props.handleOnChangeNumber(parseFloat(event.target.value));
+                }
             } else {
-                handleOnChange({ startDate, endDate });
+                props.handleOnChangeNumber(Number(event.target.value));
             }
+        } else if (event.target.type === "date") {
+            const selectedMoment = moment(event.target.value);
 
+            if (props.name === "startDate") {
+                const endDateMoment = moment(props.endDate);
+
+                if (!endDateMoment.isValid() || selectedMoment.isSameOrBefore(endDateMoment, "day")) {
+                    props.handleOnChangeDate(event.target.value);
+                } else {
+                    console.error("Startdatum darf nicht nach dem Enddatum liegen");
+                }
+            } else if (props.name === "endDate") {
+                const startDateMoment = moment(props.startDate);
+
+                if (!startDateMoment.isValid() || selectedMoment.isSameOrAfter(startDateMoment, "day")) {
+                    props.handleOnChangeDate(event.target.value);
+                } else {
+                    console.error("Enddatum darf nicht vor dem Startdatum liegen");
+                }
+            }
         } else {
-            handleOnChange(inputValue);
+            props.handleOnChangeText(event.target.value);
         }
-    };
+    }
 
     return (
         <div>
+            {props.label}:
             <label>
-                {label}:
-                {options ? (
-                    // Dropdown/select
+                {props.options && (
                     <select
-                        value={value}
-                        name={name}
-                        onChange={(event) => handleOnChange(event.target.value)}
-                        {...(isRequired && { required: true })}
+                        name={props.name}
+                        value={props.value}
+                        onChange={handleChangeSelect}
+                        required={props.isRequired}
                     >
-                        {options.map((option) => (
+                        {props.options.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
                             </option>
                         ))}
                     </select>
-                ) : textarea &&  (
-                    // Textarea
+                )}
+                {props.textarea ? (
                     <textarea
-                        value={value}
-                        onChange={handleChange}
-                        {...(isRequired && { required: true })}
+                        name={props.name}
+                        value={props.value}
+                        onChange={handleChangeText}
+                        required={props.isRequired}
+                    />
+                ) : (
+                    <input
+                        name={props.name}
+                        type={props.type}
+                        value={props.value}
+                        onChange={handleChangeInput}
+                        checked={props.checked}
+                        pattern={props.pattern}
+                        required={props.isRequired}
                     />
                 )}
-                <input
-                    type={type}
-                    name={name}
-                    checked={value}
-                    onChange={handleChange}
-                    {...(isRequired && { required: true })}
-                />
-                {type === "checkbox" && (
-                // Checkbox
-                <input
-                    type="checkbox"
-                    name={name}
-                    checked={value}
-                    onChange={handleChange}
-                    {...(isRequired && { required: true })}
-                />
-                )}
             </label>
-            <br />
+            {props.name !== "type" && <br/>}
         </div>
     );
 }

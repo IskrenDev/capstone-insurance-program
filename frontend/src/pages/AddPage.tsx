@@ -6,7 +6,6 @@ import FormLabel from "../components/content/FormLabel.tsx";
 import moment from "moment";
 
 
-
 function AddPage() {
     const [firstName, setFirstName] = useState("");
     const [familyName, setFamilyName] = useState("");
@@ -16,8 +15,8 @@ function AddPage() {
     const [telephone, setTelephone] = useState("");
     const [email, setEmail] = useState("");
     const [type, setType] = useState("");
-    const [duration, setDuration] = useState(0);
-    const [paymentPerMonth, setPaymentPerMonth] = useState(0);
+    const [duration, setDuration] = useState<number>(0);
+    const [paymentPerMonth, setPaymentPerMonth] = useState<number>(0);
     const [startDate, setStartDate] = useState<string>(moment().format("YYYY-MM-DD"));
     const [endDate, setEndDate] = useState<string>(moment().format("YYYY-MM-DD"));
     const [hasHealthIssues, setHasHealthIssues] = useState(false);
@@ -30,14 +29,11 @@ function AddPage() {
     const [vehicleYear, setVehicleYear] = useState(1900);
     const [licensePlateNumber, setLicensePlateNumber] = useState("");
 
-    console.log(startDate)
-    console.log(endDate)
-
     const typeOptions = [
-        { value: "", label: "Wählen Sie eine Versicherungsart" },
-        { value: "LIFE", label: "Lebensversicherung" },
-        { value: "PROPERTY", label: "Immobilienversicherung" },
-        { value: "VEHICLE", label: "Kfz-Versicherung" },
+        {value: "", label: "Wählen Sie eine Versicherungsart"},
+        {value: "LIFE", label: "Lebensversicherung"},
+        {value: "PROPERTY", label: "Immobilienversicherung"},
+        {value: "VEHICLE", label: "Kfz-Versicherung"},
     ];
 
     const navigate = useNavigate();
@@ -64,7 +60,7 @@ function AddPage() {
             vehicleMake,
             vehicleModel,
             vehicleYear,
-            licensePlateNumber
+            licensePlateNumber,
         };
 
         let saveEndpoint = '';
@@ -97,48 +93,70 @@ function AddPage() {
             <div className="add-insurance">
                 <form onSubmit={handleSubmit} className="insurance-form">
                     <div className="form-section">
-                        <FormLabel label="Vorname" name="firstName" type="text" value={firstName} isRequired={true} handleOnChange={setFirstName} />
-                        <FormLabel label="Name" name="familyName" type="text" value={familyName} isRequired={true} handleOnChange={setFamilyName} />
-                        <FormLabel label="PLZ" name="zipCode" type="text" value={zipCode} handleOnChange={setZipCode} />
-                        <FormLabel label="Ort" name="city" type="text" value={city} handleOnChange={setCity} />
-                        <FormLabel label="Adresse" name="address" type="text" value={address} handleOnChange={setAddress} />
-                        <FormLabel label="Telefon" name="telephone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value={telephone} handleOnChange={setTelephone} />
-                        <FormLabel label="E-Mail" name="email" type="email" value={email} handleOnChange={setEmail} />
+                        <FormLabel label="Vorname" name="firstName" type="text" value={firstName} isRequired={true}
+                                   handleOnChangeText={setFirstName}/>
+                        <FormLabel label="Name" name="familyName" type="text" value={familyName} isRequired={true}
+                                   handleOnChangeText={setFamilyName}/>
+                        <FormLabel label="PLZ" name="zipCode" type="text" value={zipCode}
+                                   handleOnChangeText={setZipCode}/>
+                        <FormLabel label="Ort" name="city" type="text" value={city}
+                                   handleOnChangeText={setCity}/>
+                        <FormLabel label="Adresse" name="address" type="text" value={address}
+                                   handleOnChangeText={setAddress}/>
+                        <FormLabel label="Telefon" name="telephone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                                   value={telephone} handleOnChangeText={setTelephone}/>
+                        <FormLabel label="E-Mail" name="email" type="email" value={email}
+                                   handleOnChangeText={setEmail}/>
                     </div>
 
                     <div className="form-section">
-                        <FormLabel label="Dauer (Monate)" name="duration" type="number" value={duration} handleOnChange={setDuration} />
-                        <FormLabel label="Beitrag (monatlich)" name="paymentPerMonth" type="number" value={paymentPerMonth} handleOnChange={setPaymentPerMonth} />
-                        <FormLabel label="Startdatum" name="startDate" type="date" value={startDate} handleOnChange={(value) => setStartDate(value)} />
-                        <FormLabel label="Enddatum" name="endDate" type="date" value={endDate} handleOnChange={(value) => setEndDate(value)} />
+                        <FormLabel label="Dauer (Monate)" name="duration" type="number" value={duration}
+                                   handleOnChangeNumber={setDuration}/>
+                        <FormLabel label="Beitrag (monatlich)" name="paymentPerMonth" type="number"
+                                   value={paymentPerMonth} handleOnChangeNumber={setPaymentPerMonth}/>
+                        <FormLabel label="Startdatum" name="startDate" type="date" value={startDate}
+                                   startDate={startDate} endDate={endDate} handleOnChangeDate={setStartDate}/>
+                        <FormLabel label="Enddatum" name="endDate" type="date" value={endDate} startDate={startDate}
+                                   endDate={endDate} handleOnChangeDate={setEndDate}/>
                     </div>
 
                     <div className="form-section">
-                        <FormLabel label="Versicherungsart" name="type" value={type} isRequired={true} handleOnChange={setType} options={typeOptions} />
+                        <FormLabel label="Versicherungsart" name="type" value={type} isRequired={true}
+                                   options={typeOptions} handleOnChangeText={setType}/>
 
                         {type === "LIFE" && (
                             <>
-                                <FormLabel label="Hat gesundheitliche Probleme" name="hasHealthIssues" type="checkbox" value={hasHealthIssues} handleOnChange={setHasHealthIssues} />
+                                <FormLabel label="Hat gesundheitliche Probleme" name="hasHealthIssues" type="checkbox"
+                                           checked={hasHealthIssues} handleOnChangeCheckbox={setHasHealthIssues}/>
                                 {hasHealthIssues && (
-                                    <FormLabel label="Gesundheitszustand Details" value={healthConditionDetails} textarea={true} handleOnChange={(value) => setHealthConditionDetails(value)} />
+                                    <FormLabel label="Gesundheitszustand Details" name={"healthConditionDetails"}
+                                               value={healthConditionDetails} textarea={true}
+                                               handleOnChangeText={setHealthConditionDetails}/>
                                 )}
                             </>
                         )}
 
                         {type === "PROPERTY" && (
                             <>
-                                <FormLabel label="Immobilienart" name="propertyType" type="text" value={propertyType} handleOnChange={setPropertyType} />
-                                <FormLabel label="Immobilienadresse" name="propertyAddress" type="text" value={propertyAddress} handleOnChange={setPropertyAddress} />
-                                <FormLabel label="Baujahr" name="constructionYear" type="number" value={constructionYear} handleOnChange={setConstructionYear} />
+                                <FormLabel label="Immobilienart" name="propertyType" type="text" value={propertyType}
+                                           handleOnChangeText={setPropertyType}/>
+                                <FormLabel label="Immobilienadresse" name="propertyAddress" type="text"
+                                           value={propertyAddress} handleOnChangeText={setPropertyAddress}/>
+                                <FormLabel label="Baujahr" name="constructionYear" type="number"
+                                           value={constructionYear} handleOnChangeNumber={setConstructionYear}/>
                             </>
                         )}
 
                         {type === "VEHICLE" && (
                             <>
-                                <FormLabel label="Kfz-Marke" name="vehicleMake" type="text" value={vehicleMake} handleOnChange={setVehicleMake} />
-                                <FormLabel label="Kfz-Modell" name="vehicleModel" type="text" value={vehicleModel} handleOnChange={setVehicleModel} />
-                                <FormLabel label="Herstellungsjahr" name="vehicleYear" type="number" value={vehicleYear} handleOnChange={setVehicleYear} />
-                                <FormLabel label="Kfz-Kennzeichen" name="licensePlateNumber" type="text" value={licensePlateNumber} handleOnChange={setLicensePlateNumber} />
+                                <FormLabel label="Kfz-Marke" name="vehicleMake" type="text" value={vehicleMake}
+                                           handleOnChangeText={setVehicleMake}/>
+                                <FormLabel label="Kfz-Modell" name="vehicleModel" type="text" value={vehicleModel}
+                                           handleOnChangeText={setVehicleModel}/>
+                                <FormLabel label="Herstellungsjahr" name="vehicleYear" type="number" value={vehicleYear}
+                                           handleOnChangeNumber={setVehicleYear}/>
+                                <FormLabel label="Kfz-Kennzeichen" name="licensePlateNumber" type="text"
+                                           value={licensePlateNumber} handleOnChangeText={setLicensePlateNumber}/>
                             </>
                         )}
                         <br/>
