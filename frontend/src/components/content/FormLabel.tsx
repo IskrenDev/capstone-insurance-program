@@ -21,60 +21,81 @@ type FormLabelProps = {
 
 function FormLabel(props: Readonly<FormLabelProps>) {
     const handleChangeText = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        props.handleOnChangeText(event.target.value);
-    }
+        props.handleOnChangeText?.(event.target.value);
+    };
 
     const handleChangeSelect = (event: ChangeEvent<HTMLSelectElement>) => {
-        props.handleOnChangeText(event.target.value);
+        props.handleOnChangeText?.(event.target.value);
+    };
 
+    function validateAndAddDuration(event: ChangeEvent<HTMLInputElement>) {
+        const isValidInput = /^\d+$/.test(event.target.value);
+        isValidInput &&
+        props.handleOnChangeNumber?.(parseInt(event.target.value, 10));
+    }
+
+    function validateAndAddYear(event: ChangeEvent<HTMLInputElement>) {
+        const isValidYear =
+            /^\d{1,4}$/.test(event.target.value) && parseInt(event.target.value, 10) >= 0;
+        isValidYear &&
+        props.handleOnChangeNumber?.(parseInt(event.target.value, 10));
+    }
+
+    function validateAndAddContribution(event: ChangeEvent<HTMLInputElement>) {
+        const isValidContribution =
+            /^(?=(\d*\.?\d+))\1$/.test(event.target.value) &&
+            parseFloat(event.target.value) >= 0;
+        isValidContribution &&
+        props.handleOnChangeNumber?.(parseFloat(event.target.value));
+    }
+
+    function validateAndAddDate(
+        event: ChangeEvent<HTMLInputElement>,
+        selectedMoment: moment.Moment,
+        endDateMoment: moment.Moment
+    ) {
+        selectedMoment = moment(event.target.value);
+
+        if (props.name === "startDate") {
+            endDateMoment = moment(props.endDate);
+            const isValidDate =
+                endDateMoment.isValid() && selectedMoment.isSameOrBefore(endDateMoment, "day");
+
+            isValidDate
+                ? props.handleOnChangeDate?.(event.target.value)
+                : console.error("Startdatum darf nicht nach dem Enddatum liegen");
+        } else if (props.name === "endDate") {
+            const startDateMoment = moment(props.startDate);
+            const isValidDate =
+                startDateMoment.isValid() && selectedMoment.isSameOrAfter(startDateMoment, "day");
+
+            isValidDate
+                ? props.handleOnChangeDate?.(event.target.value)
+                : console.error("Enddatum darf nicht vor dem Startdatum liegen");
+        }
     }
 
     const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.type === "checkbox") {
-            props.handleOnChangeCheckbox(event.target.checked);
+            props.handleOnChangeCheckbox?.(event.target.checked);
         } else if (event.target.type === "number") {
             if (props.label.toLowerCase().includes("monate")) {
-                const isValidInput = /^\d+$/.test(event.target.value);
-                if (isValidInput) {
-                    props.handleOnChangeNumber(parseInt(event.target.value, 10));
-                }
+                validateAndAddDuration(event);
             } else if (props.label.toLowerCase().includes("jahr")) {
-                const isValidYear = /^\d{1,4}$/.test(event.target.value) && parseInt(event.target.value, 10) >= 0;
-                if (isValidYear) {
-                    props.handleOnChangeNumber(parseInt(event.target.value, 10));
-                }
+                validateAndAddYear(event);
             } else if (props.label.toLowerCase().includes("beitrag")) {
-                const isValidContribution = /^(?=(\d*\.?\d+))\1$/.test(event.target.value) && parseFloat(event.target.value) >= 0;
-                if (isValidContribution) {
-                    props.handleOnChangeNumber(parseFloat(event.target.value));
-                }
+                validateAndAddContribution(event);
             } else {
-                props.handleOnChangeNumber(Number(event.target.value));
+                props.handleOnChangeNumber?.(Number(event.target.value));
             }
         } else if (event.target.type === "date") {
             const selectedMoment = moment(event.target.value);
-
-            if (props.name === "startDate") {
-                const endDateMoment = moment(props.endDate);
-
-                if (!endDateMoment.isValid() || selectedMoment.isSameOrBefore(endDateMoment, "day")) {
-                    props.handleOnChangeDate(event.target.value);
-                } else {
-                    console.error("Startdatum darf nicht nach dem Enddatum liegen");
-                }
-            } else if (props.name === "endDate") {
-                const startDateMoment = moment(props.startDate);
-
-                if (!startDateMoment.isValid() || selectedMoment.isSameOrAfter(startDateMoment, "day")) {
-                    props.handleOnChangeDate(event.target.value);
-                } else {
-                    console.error("Enddatum darf nicht vor dem Startdatum liegen");
-                }
-            }
+            const endDateMoment = moment(props.endDate);
+            validateAndAddDate(event, selectedMoment, endDateMoment);
         } else {
-            props.handleOnChangeText(event.target.value);
+            props.handleOnChangeText?.(event.target.value);
         }
-    }
+    };
 
     return (
         <div>
