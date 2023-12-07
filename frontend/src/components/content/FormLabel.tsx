@@ -49,12 +49,8 @@ function FormLabel(props: Readonly<FormLabelProps>) {
         props.handleOnChangeNumber?.(parseFloat(event.target.value));
     }
 
-    function validateAndAddDate(
-        event: ChangeEvent<HTMLInputElement>,
-        selectedMoment: moment.Moment,
-        endDateMoment: moment.Moment
-    ) {
-        selectedMoment = moment(event.target.value);
+    function validateAndAddDate(event: ChangeEvent<HTMLInputElement>, endDateMoment: moment.Moment) {
+        const selectedMoment = moment(event.target.value);
 
         if (props.name === "startDate") {
             endDateMoment = moment(props.endDate);
@@ -90,8 +86,7 @@ function FormLabel(props: Readonly<FormLabelProps>) {
             }
         } else if (event.target.type === "date") {
             const selectedMoment = moment(event.target.value);
-            const endDateMoment = moment(props.endDate);
-            validateAndAddDate(event, selectedMoment, endDateMoment);
+            validateAndAddDate(event, selectedMoment);
         } else {
             props.handleOnChangeText?.(event.target.value);
         }
