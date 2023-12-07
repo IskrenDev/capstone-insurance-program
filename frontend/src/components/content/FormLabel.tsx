@@ -44,7 +44,7 @@ function FormLabel(props: Readonly<FormLabelProps>) {
                     props.handleOnChangeNumber(parseInt(event.target.value, 10));
                 }
             } else if (props.label.toLowerCase().includes("beitrag")) {
-                const isValidContribution = /^\d*\.?\d+$/.test(event.target.value) && parseFloat(event.target.value) >= 0;
+                const isValidContribution = /^(?=(\d*\.?\d+))\1$/.test(event.target.value) && parseFloat(event.target.value) >= 0;
                 if (isValidContribution) {
                     props.handleOnChangeNumber(parseFloat(event.target.value));
                 }
