@@ -34,37 +34,38 @@ function EditPage() {
 
     const {type, id} = useParams();
 
+    const setBasicInfo = (data: Insurance) => {
+        setFirstName(data.firstName || "");
+        setFamilyName(data.familyName || "");
+        setZipCode(data.zipCode || "");
+        setCity(data.city || "");
+        setAddress(data.address || "");
+        setTelephone(data.telephone || "");
+        setEmail(data.email || "");
+        setDuration(data.duration || 0);
+        setPaymentPerMonth(data.paymentPerMonth || 0);
+        setStartDate(data.startDate || moment().format("YYYY-MM-DD"));
+        setEndDate(data.endDate || moment().format("YYYY-MM-DD"));
+    };
+
+    const setInsuranceDetails = (data: Insurance) => {
+        setHasHealthIssues(!!data.hasHealthIssues);
+        setHealthConditionDetails(data.healthConditionDetails || "");
+        setPropertyType(data.propertyType || "");
+        setPropertyAddress(data.propertyAddress || "");
+        setConstructionYear(data.constructionYear || 1900);
+        setVehicleMake(data.vehicleMake || "");
+        setVehicleModel(data.vehicleModel || "");
+        setVehicleYear(data.vehicleYear || 1900);
+        setLicensePlateNumber(data.licensePlateNumber || "");
+    };
+
     useEffect(() => {
         axios.get(`/api/${type}/${id}`)
             .then((response: AxiosResponse<Insurance>) => {
                 setInsuranceType(response.data);
-                const {
-                    firstName, familyName, zipCode, city, address,
-                    telephone, email, duration, paymentPerMonth,
-                    startDate, endDate, hasHealthIssues, healthConditionDetails,
-                    propertyType, propertyAddress, constructionYear,
-                    vehicleMake, vehicleModel, vehicleYear, licensePlateNumber
-                } = response.data;
-                setFirstName(firstName || "");
-                setFamilyName(familyName || "");
-                setZipCode(zipCode || "");
-                setCity(city || "");
-                setAddress(address || "");
-                setTelephone(telephone || "");
-                setEmail(email || "");
-                setDuration(duration || 0);
-                setPaymentPerMonth(paymentPerMonth || 0);
-                setStartDate(startDate || moment().format("YYYY-MM-DD"));
-                setEndDate(endDate || moment().format("YYYY-MM-DD"));
-                setHasHealthIssues(!!hasHealthIssues);
-                setHealthConditionDetails(healthConditionDetails || "");
-                setPropertyType(propertyType || "");
-                setPropertyAddress(propertyAddress || "");
-                setConstructionYear(constructionYear || 1900);
-                setVehicleMake(vehicleMake || "");
-                setVehicleModel(vehicleModel || "");
-                setVehicleYear(vehicleYear || 1900);
-                setLicensePlateNumber(licensePlateNumber || "");
+                setBasicInfo(response.data);
+                setInsuranceDetails(response.data);
             })
             .catch((error: AxiosError) => {
                 console.error('Error fetching insurance data:', error);
