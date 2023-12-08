@@ -2,7 +2,7 @@ import "./AddPage.css";
 import "./DetailsPage.css";
 import {Link, useParams} from "react-router-dom";
 import axios, {AxiosResponse} from "axios";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Insurance} from "../types/types.ts";
 import DetailsLabel from "../components/content/DetailsLabel.tsx";
 
