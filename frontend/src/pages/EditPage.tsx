@@ -35,29 +35,29 @@ function EditPage() {
     const {type, id} = useParams();
 
     const setBasicInfo = (data: Insurance) => {
-        setFirstName(data.firstName || "");
-        setFamilyName(data.familyName || "");
-        setZipCode(data.zipCode || "");
-        setCity(data.city || "");
-        setAddress(data.address || "");
-        setTelephone(data.telephone || "");
-        setEmail(data.email || "");
-        setDuration(data.duration || 0);
-        setPaymentPerMonth(data.paymentPerMonth || 0);
-        setStartDate(data.startDate || moment().format("YYYY-MM-DD"));
-        setEndDate(data.endDate || moment().format("YYYY-MM-DD"));
+        setFirstName(data.firstName ?? "");
+        setFamilyName(data.familyName ?? "");
+        setZipCode(data.zipCode ?? "");
+        setCity(data.city ?? "");
+        setAddress(data.address ?? "");
+        setTelephone(data.telephone ?? "");
+        setEmail(data.email ?? "");
+        setDuration(data.duration ?? 0);
+        setPaymentPerMonth(data.paymentPerMonth ?? 0);
+        setStartDate(data.startDate ?? moment().format("YYYY-MM-DD"));
+        setEndDate(data.endDate ?? moment().format("YYYY-MM-DD"));
     };
 
     const setInsuranceDetails = (data: Insurance) => {
         setHasHealthIssues(!!data.hasHealthIssues);
-        setHealthConditionDetails(data.healthConditionDetails || "");
-        setPropertyType(data.propertyType || "");
-        setPropertyAddress(data.propertyAddress || "");
-        setConstructionYear(data.constructionYear || 1900);
-        setVehicleMake(data.vehicleMake || "");
-        setVehicleModel(data.vehicleModel || "");
-        setVehicleYear(data.vehicleYear || 1900);
-        setLicensePlateNumber(data.licensePlateNumber || "");
+        setHealthConditionDetails(data.healthConditionDetails ?? "");
+        setPropertyType(data.propertyType ?? "");
+        setPropertyAddress(data.propertyAddress ?? "");
+        setConstructionYear(data.constructionYear ?? 1900);
+        setVehicleMake(data.vehicleMake ?? "");
+        setVehicleModel(data.vehicleModel ?? "");
+        setVehicleYear(data.vehicleYear ?? 1900);
+        setLicensePlateNumber(data.licensePlateNumber ?? "");
     };
 
     useEffect(() => {
