@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import axios, {AxiosResponse} from "axios";
 import React, {useEffect, useState} from "react";
 import {Insurance} from "../types/types.ts";
+import DetailsLabel from "../components/content/DetailsLabel.tsx";
 
 function DetailsPage() {
     const {id, type} = useParams();
@@ -25,138 +26,57 @@ function DetailsPage() {
             {insurance && (
                 <form className="insurance-form">
                     <div className="form-section">
-                        <label>
-                            Vorname:
-                            <div className="normal-text">{insurance.firstName}</div>
-                        </label>
-                        <br/>
-                        <label>
-                            Name:
-                            <div className="normal-text">{insurance.familyName}</div>
-                        </label>
-                        <br/>
-
-                        <label>
-                            PLZ:
-                            <div className="normal-text">{insurance.zipCode}</div>
-                        </label>
-                        <br/>
-
-                        <label>
-                            Ort:
-                            <div className="normal-text">{insurance.city}</div>
-                        </label>
-                        <br/>
-
-                        <label>
-                            Adresse:
-                            <div className="normal-text">{insurance.address}</div>
-                        </label>
-                        <br/>
-
-                        <label>
-                            Telefon:
-                            <br/><a href={`tel:${insurance.telephone}`}>{insurance.telephone}</a>
-                        </label>
-                        <br/>
-
-                        <label>
-                            E-Mail:
-                            <br/><a href={`mailto:${insurance.email}`}>{insurance.email}</a>
-                        </label>
-                        <br/>
+                        <DetailsLabel label="Vorname" type="text" value={insurance.firstName}/>
+                        <DetailsLabel label="Name" type="text" value={insurance.familyName}/>
+                        <DetailsLabel label="PLZ" type="text" value={insurance.zipCode}/>
+                        <DetailsLabel label="Ort" type="text" value={insurance.city}/>
+                        <DetailsLabel label="Adresse" type="text" value={insurance.address}/>
+                        <DetailsLabel label="Telefon" type="tel" value={insurance.telephone}/>
+                        <DetailsLabel label="E-Mail" type="email" value={insurance.email}/>
                     </div>
 
                     <div className="form-section">
-                        <label>
-                            Dauer (Monate):
-                            <div className="normal-text">{insurance.duration}</div>
-                        </label>
-                        <br/>
-
-                        <label>
-                            Beitrag (monatlich):
-                            <div className="normal-text">{insurance.paymentPerMonth}</div>
-                        </label>
-                        <br/>
-
-                        <label>
-                            Startdatum:
-                            <div className="normal-text">{insurance.startDate}</div>
-                        </label>
-                        <br/>
-
-                        <label>
-                            Enddatum:
-                            <div className="normal-text">{insurance.endDate}</div>
-                        </label>
-                        <br/>
+                        <DetailsLabel label="Dauer (Monate)" type="text" value={insurance.duration}/>
+                        <DetailsLabel label="Beitrag (monatlich)" type="text" value={insurance.paymentPerMonth}/>
+                        <DetailsLabel label="Startdatum" type="text" value={insurance.startDate}/>
+                        <DetailsLabel label="Enddatum" type="text" value={insurance.endDate}/>
                     </div>
 
                     <div className="form-section">
-                        <label>
-                            Versicherungsart:
-                            <div className="normal-text">{insurance.type}</div>
-                        </label>
+                        <DetailsLabel label="Versicherungsart" value={insurance.type}
+                                      insuranceType={[
+                                          {value: "LIFE", label: "Lebensversicherung"},
+                                          {value: "PROPERTY", label: "Immobilienversicherung"},
+                                          {value: "VEHICLE", label: "Kfz-Versicherung"},
+                                      ]}
+                        />
                         <br/>
 
                         {insurance.type === "LIFE" && (
                             <>
-                                <label>
-                                    Hat gesundheitliche Probleme:
-                                    <div className="normal-text">{insurance.hasHealthIssues ? "Ja" : "Nein"}</div>
-                                </label>
-                                <br/>
+                                <DetailsLabel label="Hat gesundheitliche Probleme" type="text"
+                                              value={insurance.hasHealthIssues}/>
                                 {insurance.hasHealthIssues && (
-                                    <label>
-                                        Gesundheitszustand Details:
-                                        <div className="normal-text">{insurance.healthConditionDetails}</div>
-                                    </label>
+                                    <DetailsLabel label="Gesundheitszustand Details" type="text"
+                                                  value={insurance.healthConditionDetails}/>
                                 )}
                             </>
                         )}
 
                         {insurance.type === "PROPERTY" && (
                             <>
-                                <label>
-                                    Immobilienart:
-                                    <div className="normal-text">{insurance.propertyType}</div>
-                                </label>
-                                <br/>
-                                <label>
-                                    Immobilienadresse:
-                                    <div className="normal-text">{insurance.propertyAddress}</div>
-                                </label>
-                                <br/>
-                                <label>
-                                    Baujahr:
-                                    <div className="normal-text">{insurance.constructionYear}</div>
-                                </label>
+                                <DetailsLabel label="Immobilienart" type="text" value={insurance.propertyType}/>
+                                <DetailsLabel label="Immobilienadresse" type="text" value={insurance.propertyAddress}/>
+                                <DetailsLabel label="Baujahr" type="text" value={insurance.constructionYear}/>
                             </>
                         )}
 
                         {insurance.type === "VEHICLE" && (
                             <>
-                                <label>
-                                    Kfz-Marke:
-                                    <div className="normal-text">{insurance.vehicleMake}</div>
-                                </label>
-                                <br/>
-                                <label>
-                                    Kfz-Modell:
-                                    <div className="normal-text">{insurance.vehicleModel}</div>
-                                </label>
-                                <br/>
-                                <label>
-                                    Herstellungsjahr:
-                                    <div className="normal-text">{insurance.vehicleYear}</div>
-                                </label>
-                                <br/>
-                                <label>
-                                    Kfz-Kennzeichen:
-                                    <div className="normal-text">{insurance.licensePlateNumber}</div>
-                                </label>
-                                <br/>
+                                <DetailsLabel label="Kfz-Marke" type="text" value={insurance.vehicleMake}/>
+                                <DetailsLabel label="Kfz-Modell" type="text" value={insurance.vehicleModel}/>
+                                <DetailsLabel label="Herstellungsjahr" type="text" value={insurance.vehicleYear}/>
+                                <DetailsLabel label="Kfz-Kennzeichen" type="text" value={insurance.licensePlateNumber}/>
                             </>
                         )}
                         <br/>
