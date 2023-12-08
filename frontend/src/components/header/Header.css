@@ -3,11 +3,13 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #ffffff;
+    background: linear-gradient(to right, rgb(0, 84, 75) 0%, rgb(0, 155, 141) 50%, rgb(0, 84, 75) 100%);
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-main {
     padding: 10px;
+    text-align: left;
+    margin-left: 30px;
 }

@@ -1,23 +1,6 @@
 import {ChangeEvent} from "react";
+import {FormLabelProps} from "../../types/types.ts";
 import moment from "moment";
-
-type FormLabelProps = {
-    label: string;
-    name: string;
-    value?: string | number | readonly string[]
-    handleOnChangeNumber?: (v: number) => void;
-    handleOnChangeText?: (v: string) => void;
-    handleOnChangeCheckbox?: (v: boolean) => void;
-    handleOnChangeDate?: (v: string) => void;
-    isRequired?: boolean;
-    checked?: boolean
-    options?: { value: string; label: string }[];
-    textarea?: boolean;
-    pattern?: string;
-    startDate?: string;
-    endDate?: string;
-    type?: "date" | "number" | "checkbox" | "text" | "email" | "tel";
-}
 
 function FormLabel(props: Readonly<FormLabelProps>) {
     const handleChangeText = (event: ChangeEvent<HTMLTextAreaElement>) => {
