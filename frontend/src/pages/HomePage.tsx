@@ -1,9 +1,12 @@
 import "./AddPage.css";
 import "./HomePage.css";
+import "./AddPage.tsx";
 import {Link} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import axios, {AxiosResponse} from "axios";
 import {AllInsurancesResponse, Insurance} from "../types/types.ts";
+import InsuranceList from "../components/content/InsuranceList.tsx";
+import Header from "../components/header/Header.tsx";
 
 function HomePage() {
     const [lifeInsurances, setLifeInsurances] = useState<Insurance[]>([]);
@@ -25,50 +28,16 @@ function HomePage() {
 
     return (
         <>
-            <h1>Übersicht</h1>
-            <div>
-                <button className="button-link">
-                    <Link to={"/insurances/add"} >Neue Versicherung</Link>
-                </button>
+        <Header />
+        <div className="overview-container">
+            <h1 className="overview-title">Übersicht</h1>
+            <button className="button-link">
+                <Link to="/insurances/add">Neue Versicherung</Link>
+            </button>
                 <div className="column-container">
-                    <div className="column">
-                        <h2>Lebensversicherungen</h2>
-                        <ul>
-                            {lifeInsurances.map(insurance => (
-                                <li key={insurance.id}>
-                                    <Link to={`/details/life/${insurance.id}`}>
-                                        {insurance.firstName} {insurance.familyName}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    <div className="column">
-                        <h2>Immobilienversicherungen</h2>
-                        <ul>
-                            {propertyInsurances.map(insurance => (
-                                <li key={insurance.id}>
-                                    <Link to={`/details/property/${insurance.id}`}>
-                                        {insurance.firstName} {insurance.familyName}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    <div className="column">
-                        <h2>Kfz-Versicherungen</h2>
-                        <ul>
-                            {vehicleInsurances.map(insurance => (
-                                <li key={insurance.id}>
-                                    <Link to={`/details/vehicle/${insurance.id}`}>
-                                        {insurance.firstName} {insurance.familyName}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    <InsuranceList insurances={lifeInsurances} headerText="Lebensversicherungen" type="life"/>
+                    <InsuranceList insurances={propertyInsurances} headerText="Immobilienversicherungen" type="property"/>
+                    <InsuranceList insurances={vehicleInsurances} headerText="Kfz-Versicherungen" type="vehicle"/>
                 </div>
             </div>
         </>

@@ -5,11 +5,11 @@
 
 .column {
     flex: 1;
-    margin: 0 10px;
     padding: 15px;
     border: 1px solid #ccc;
-    max-width: 380px;
     font-size: 18px;
+    width: 400px;
+    margin-right: 16px;
 }
 
 .column h2 {
@@ -39,3 +39,30 @@
 .column li a:hover {
     color: #00988b
 }
+
+.accordion-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    width: 42px;
+    height: 34px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.sort-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    width: 42px;
+    height: 34px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: right;
+    margin-right: -5px;
+}
+
