@@ -41,26 +41,30 @@ function EditPage() {
                 const {
                     firstName, familyName, zipCode, city, address,
                     telephone, email, duration, paymentPerMonth,
-                    startDate, endDate
+                    startDate, endDate, hasHealthIssues, healthConditionDetails,
+                    propertyType, propertyAddress, constructionYear,
+                    vehicleMake, vehicleModel, vehicleYear, licensePlateNumber
                 } = response.data;
-                setFirstName(firstName);
-                setFamilyName(familyName);
-                setZipCode(zipCode);
-                setCity(city);
-                setAddress(address);
-                setTelephone(telephone);
-                setEmail(email);
-                setDuration(duration);
-                setPaymentPerMonth(paymentPerMonth);
-                setStartDate(startDate);
-                setEndDate(endDate);
-                setHealthConditionDetails(healthConditionDetails);
-                setPropertyType(propertyType);
-                setPropertyAddress(propertyAddress);
-                setConstructionYear(constructionYear);
-                setVehicleMake(vehicleMake);
-                setVehicleModel(vehicleModel);
-                setVehicleYear(vehicleYear);
+                setFirstName(firstName || "");
+                setFamilyName(familyName || "");
+                setZipCode(zipCode || "");
+                setCity(city || "");
+                setAddress(address || "");
+                setTelephone(telephone || "");
+                setEmail(email || "");
+                setDuration(duration || 0);
+                setPaymentPerMonth(paymentPerMonth || 0);
+                setStartDate(startDate || moment().format("YYYY-MM-DD"));
+                setEndDate(endDate || moment().format("YYYY-MM-DD"));
+                setHasHealthIssues(!!hasHealthIssues);
+                setHealthConditionDetails(healthConditionDetails || "");
+                setPropertyType(propertyType || "");
+                setPropertyAddress(propertyAddress || "");
+                setConstructionYear(constructionYear || 1900);
+                setVehicleMake(vehicleMake || "");
+                setVehicleModel(vehicleModel || "");
+                setVehicleYear(vehicleYear || 1900);
+                setLicensePlateNumber(licensePlateNumber || "");
             })
             .catch((error: AxiosError) => {
                 console.error('Error fetching insurance data:', error);
