@@ -109,6 +109,7 @@ function FormLabel(props: Readonly<FormLabelProps>) {
                         checked={props.checked}
                         pattern={props.pattern}
                         required={props.isRequired}
+                        readOnly={props.isReadOnly}
                     />
                 )}
             </label>

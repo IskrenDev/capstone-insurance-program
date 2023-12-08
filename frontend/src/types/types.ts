@@ -39,6 +39,7 @@ export type FormLabelProps = {
     startDate?: string;
     endDate?: string;
     type?: "date" | "number" | "checkbox" | "text" | "email" | "tel";
+    isReadOnly?: boolean;
 }
 
 export type DetailsLabelProps = {
