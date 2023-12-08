@@ -14,15 +14,17 @@ function DetailsLabel(props: Readonly<DetailsLabelProps>) {
             {props.label}:
             <label>
                 <div className="normal-text">
-                    {props.type === "tel" ? (
+                    {props.type === "tel" && (
                         <a href={`tel:${props.value}`}>{props.value}</a>
-                    ) : props.type === "email" ? (
+                    )}
+                    {props.type === "email" && (
                         <a href={`mailto:${props.value}`}>{props.value}</a>
+                    )}
+                    {typeof props.value === "boolean" ? (
+                        <span>{props.value ? "Ja" : "Nein"}</span>
                     ) : (
                         <>
-                            {typeof props.value === "boolean" ? (
-                                <span>{props.value ? "Ja" : "Nein"}</span>
-                            ) : (
+                            {props.type !== "tel" && props.type !== "email" && (
                                 <>
                                     {props.label !== "Versicherungsart" && <span>{props.value}</span>}
                                     <span>{getTypeLabel()}</span>

@@ -2,7 +2,7 @@ import {InsuranceListProps} from "../../types/types.ts";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 
-function InsuranceList(props: InsuranceListProps) {
+function InsuranceList(props: Readonly<InsuranceListProps>) {
     const [sortedInsurances, setSortedInsurances] = useState([...props.insurances]);
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
