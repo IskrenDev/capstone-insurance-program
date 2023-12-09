@@ -1,71 +1,63 @@
 import "./AddPage.css";
-import React, {useEffect, useState} from 'react';
-import axios, {AxiosError, AxiosResponse} from "axios";
-import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import FormLabel from "../components/content/FormLabel.tsx";
 import moment from "moment";
-import {Insurance} from "../types/types.ts";
+import { Insurance } from "../types/types.ts";
 import DetailsLabel from "../components/content/DetailsLabel.tsx";
 
 function EditPage() {
-    const [insuranceType, setInsuranceType] = useState<Insurance>();
-    const [firstName, setFirstName] = useState("");
-    const [familyName, setFamilyName] = useState("");
-    const [zipCode, setZipCode] = useState("");
-    const [city, setCity] = useState("");
-    const [address, setAddress] = useState("");
-    const [telephone, setTelephone] = useState("");
-    const [email, setEmail] = useState("");
+    const [insuranceType, setInsuranceType] = useState<Insurance | undefined>(undefined);
+    const [firstName, setFirstName] = useState<string>("");
+    const [familyName, setFamilyName] = useState<string>("");
+    const [zipCode, setZipCode] = useState<string>("");
+    const [city, setCity] = useState<string>("");
+    const [address, setAddress] = useState<string>("");
+    const [telephone, setTelephone] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
     const [duration, setDuration] = useState<number>(0);
     const [paymentPerMonth, setPaymentPerMonth] = useState<number>(0);
     const [startDate, setStartDate] = useState<string>(moment().format("YYYY-MM-DD"));
     const [endDate, setEndDate] = useState<string>(moment().format("YYYY-MM-DD"));
-    const [hasHealthIssues, setHasHealthIssues] = useState(false);
-    const [healthConditionDetails, setHealthConditionDetails] = useState("");
-    const [propertyType, setPropertyType] = useState("");
-    const [propertyAddress, setPropertyAddress] = useState("");
-    const [constructionYear, setConstructionYear] = useState(1900);
-    const [vehicleMake, setVehicleMake] = useState("");
-    const [vehicleModel, setVehicleModel] = useState("");
-    const [vehicleYear, setVehicleYear] = useState(1900);
-    const [licensePlateNumber, setLicensePlateNumber] = useState("");
+    const [hasHealthIssues, setHasHealthIssues] = useState<boolean>(false);
+    const [healthConditionDetails, setHealthConditionDetails] = useState<string>("");
+    const [propertyType, setPropertyType] = useState<string>("");
+    const [propertyAddress, setPropertyAddress] = useState<string>("");
+    const [constructionYear, setConstructionYear] = useState<number>(1900);
+    const [vehicleMake, setVehicleMake] = useState<string>("");
+    const [vehicleModel, setVehicleModel] = useState<string>("");
+    const [vehicleYear, setVehicleYear] = useState<number>(1900);
+    const [licensePlateNumber, setLicensePlateNumber] = useState<string>("");
 
     const navigate: NavigateFunction = useNavigate();
-
-    const {type, id} = useParams();
-
-    const setBasicInfo = (data: Insurance) => {
-        setFirstName(data.firstName ?? "");
-        setFamilyName(data.familyName ?? "");
-        setZipCode(data.zipCode ?? "");
-        setCity(data.city ?? "");
-        setAddress(data.address ?? "");
-        setTelephone(data.telephone ?? "");
-        setEmail(data.email ?? "");
-        setDuration(data.duration ?? 0);
-        setPaymentPerMonth(data.paymentPerMonth ?? 0);
-        setStartDate(data.startDate ?? moment().format("YYYY-MM-DD"));
-        setEndDate(data.endDate ?? moment().format("YYYY-MM-DD"));
-    };
-
-    const setInsuranceDetails = (data: Insurance) => {
-        setHasHealthIssues(!!data.hasHealthIssues);
-        setHealthConditionDetails(data.healthConditionDetails ?? "");
-        setPropertyType(data.propertyType ?? "");
-        setPropertyAddress(data.propertyAddress ?? "");
-        setConstructionYear(data.constructionYear ?? 1900);
-        setVehicleMake(data.vehicleMake ?? "");
-        setVehicleModel(data.vehicleModel ?? "");
-        setVehicleYear(data.vehicleYear ?? 1900);
-        setLicensePlateNumber(data.licensePlateNumber ?? "");
-    };
+    const { type, id } = useParams();
 
     useEffect(() => {
-        axios.get(`/api/${type}/${id}`)
+        axios
+            .get(`/api/${type}/${id}`)
             .then((response: AxiosResponse<Insurance>) => {
                 setInsuranceType(response.data);
-                setBasicInfo(response.data);
-                setInsuranceDetails(response.data);
+                setFirstName(response.data.firstName ?? "");
+                setFamilyName(response.data.familyName ?? "");
+                setZipCode(response.data.zipCode ?? "");
+                setCity(response.data.city ?? "");
+                setAddress(response.data.address ?? "");
+                setTelephone(response.data.telephone ?? "");
+                setEmail(response.data.email ?? "");
+                setDuration(response.data.duration ?? 0);
+                setPaymentPerMonth(response.data.paymentPerMonth ?? 0);
+                setStartDate(response.data.startDate ?? moment().format("YYYY-MM-DD"));
+                setEndDate(response.data.endDate ?? moment().format("YYYY-MM-DD"));
+                setHasHealthIssues(!!response.data.hasHealthIssues);
+                setHealthConditionDetails(response.data.healthConditionDetails ?? "");
+                setPropertyType(response.data.propertyType ?? "");
+                setPropertyAddress(response.data.propertyAddress ?? "");
+                setConstructionYear(response.data.constructionYear ?? 1900);
+                setVehicleMake(response.data.vehicleMake ?? "");
+                setVehicleModel(response.data.vehicleModel ?? "");
+                setVehicleYear(response.data.vehicleYear ?? 1900);
+                setLicensePlateNumber(response.data.licensePlateNumber ?? "");
             })
             .catch((error: AxiosError) => {
                 console.error('Error fetching insurance data:', error);
@@ -97,9 +89,8 @@ function EditPage() {
             licensePlateNumber,
         };
 
-        const editEndpoint = `/api/${type}/${id}`;
-
-        axios.put(editEndpoint, editedInsuranceData)
+        axios
+            .put(`/api/${type}/${id}`, editedInsuranceData)
             .then(() => {
                 navigate("/");
             })
