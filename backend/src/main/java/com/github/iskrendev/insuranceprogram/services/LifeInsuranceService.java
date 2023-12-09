@@ -49,4 +49,8 @@ public class LifeInsuranceService {
 
         return lifeInsuranceRepo.save(updatedLifeInsurance);
     }
+
+    public void deleteLifeInsurance(String id) {
+        lifeInsuranceRepo.deleteById(id);
+    }
 }

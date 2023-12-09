@@ -53,6 +53,11 @@ public class VehicleInsuranceController {
         return vehicleInsuranceService.updateVehicleInsurance(id, vehicleInsuranceUpdateDTO);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteVehicleInsurance(@PathVariable String id) {
+        vehicleInsuranceService.deleteVehicleInsurance(id);
+    }
+
     @ExceptionHandler(NoSuchInsuranceException.class)
     public ResponseEntity<String> handleNoSuchInsuranceException(NoSuchInsuranceException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

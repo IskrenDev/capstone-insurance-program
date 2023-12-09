@@ -51,4 +51,7 @@ public class VehicleInsuranceService {
 
         return vehicleInsuranceRepo.save(updatedVehicleInsurance);
     }
+    public void deleteVehicleInsurance(String id) {
+        vehicleInsuranceRepo.deleteById(id);
+    }
 }

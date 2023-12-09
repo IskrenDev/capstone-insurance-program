@@ -50,4 +50,8 @@ public class PropertyInsuranceService {
 
         return propertyInsuranceRepo.save(updatedPropertyInsurance);
     }
+
+    public void deletePropertyInsurance(String id) {
+        propertyInsuranceRepo.deleteById(id);
+    }
 }
