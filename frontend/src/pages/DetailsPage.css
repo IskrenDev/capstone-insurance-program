@@ -1,3 +1,22 @@
 .normal-text {
     font-weight: normal;
 }
+
+.button-edit {
+    width: 250px;
+    height: 40px;
+    position: absolute;
+    margin-top: 95px;
+    transform: translateY(-210%);
+    right: 10%;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button-edit a {
+    color: white;
+}
+
+.button-edit:hover a {
+    color: #f5f5f5;
+    text-decoration: none;
+}

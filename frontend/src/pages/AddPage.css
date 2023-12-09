@@ -49,25 +49,27 @@
     height: 40px;
     position: absolute;
     left: 50%;
-    bottom: -12%;
+    bottom: -22%;
     transform: translateX(-50%);
     color: #f5f5f5;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
-.button-link {
+.button-add {
     width: 250px;
     height: 40px;
     position: absolute;
     margin-top: 130px;
     transform: translateY(-210%);
-    right: 10%;
+    right: 3%;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
-.button-link a {
+.button-add a {
     color: white;
 }
 
-.button-link:hover a {
+.button-add:hover a {
     color: #f5f5f5;
     text-decoration: none;
 }

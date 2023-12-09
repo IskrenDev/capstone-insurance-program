@@ -1,8 +1,8 @@
 import "./AddPage.css";
 import "./DetailsPage.css";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import axios, {AxiosResponse} from "axios";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Insurance} from "../types/types.ts";
 import DetailsLabel from "../components/content/DetailsLabel.tsx";
 
@@ -22,6 +22,9 @@ function DetailsPage() {
 
     return (
         <div>
+            <button className="button-edit">
+                <Link to={`/details/${type}/${id}/edit`}>Versicherung Bearbeiten</Link>
+            </button>
             <h2>Versicherungsdaten</h2>
             {insurance && (
                 <form className="insurance-form">

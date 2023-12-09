@@ -31,7 +31,7 @@ function HomePage() {
         <Header />
         <div className="overview-container">
             <h1 className="overview-title">Übersicht</h1>
-            <button className="button-link">
+            <button className="button-add">
                 <Link to="/insurances/add">Neue Versicherung</Link>
             </button>
                 <div className="column-container">
