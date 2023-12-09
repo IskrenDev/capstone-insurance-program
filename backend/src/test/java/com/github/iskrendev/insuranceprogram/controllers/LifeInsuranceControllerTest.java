@@ -257,4 +257,32 @@ class LifeInsuranceControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("There is no insurance with this id"));
     }
+
+    @Test
+    @DirtiesContext
+    void deleteLifeInsurance() throws Exception {
+        LifeInsurance lifeInsurance = LifeInsurance.builder()
+                .id("1")
+                .firstName("TestFirstName")
+                .familyName("TestFamilyName")
+                .zipCode("12345")
+                .city("Testcity")
+                .address("Test str. 123")
+                .telephone("012345")
+                .email("testmail@example.com")
+                .type(InsuranceType.LIFE)
+                .duration(48)
+                .paymentPerMonth(BigDecimal.valueOf(100))
+                .startDate(LocalDate.of(2024, 1, 1))
+                .endDate(LocalDate.of(2028, 1, 1))
+                .hasHealthIssues(false)
+                .healthConditionDetails("")
+                .build();
+        lifeInsuranceRepo.save(lifeInsurance);
+        mockMvc.perform(delete(BASE_URI + "/" + lifeInsurance.id()))
+                .andExpect(status().isOk());
+        mockMvc.perform(get(BASE_URI))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[]"));
+    }
 }

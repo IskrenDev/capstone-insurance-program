@@ -243,4 +243,11 @@ class PropertyInsuranceServiceTest {
         verify(mockPropertyInsuranceRepo).findById("invalidId");
         verify(mockPropertyInsuranceRepo, never()).save(any(PropertyInsurance.class));
     }
+
+    @Test
+    void deletePropertyInsurance() {
+        String propertyInsuranceId = "1";
+        propertyInsuranceService.deletePropertyInsurance(propertyInsuranceId);
+        verify(mockPropertyInsuranceRepo).deleteById(propertyInsuranceId);
+    }
 }
