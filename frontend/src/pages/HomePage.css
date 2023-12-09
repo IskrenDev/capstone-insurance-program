@@ -1,6 +1,7 @@
 .column-container {
     display: flex;
     margin: 0 -10px;
+    overflow-x: auto;
 }
 
 .column {
@@ -8,7 +9,8 @@
     padding: 15px;
     border: 1px solid #ccc;
     font-size: 18px;
-    width: 400px;
+    width: 320px;
+    max-width: 400px;
     margin-right: 16px;
 }
 
@@ -40,7 +42,9 @@
     color: #00988b
 }
 
-.accordion-button {
+.accordion-button,
+.sort-button,
+.common-button {
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -50,19 +54,14 @@
     font-size: 14px;
     font-weight: bold;
     text-align: right;
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-button {
     margin-right: 10px;
 }
 
 .sort-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: white;
-    width: 42px;
-    height: 34px;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: right;
     margin-right: -5px;
 }
 

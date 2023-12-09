@@ -9,6 +9,7 @@
     margin-top: 95px;
     transform: translateY(-210%);
     right: 10%;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 .button-edit a {

@@ -1,5 +1,5 @@
 import "./AddPage.css";
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import FormLabel from "../components/content/FormLabel.tsx";
@@ -17,7 +17,7 @@ function generateInitialState(): Insurance {
         address: "",
         telephone: "",
         email: "",
-        type: "",
+        type: "LIFE",
         duration: 0,
         paymentPerMonth: 0,
         startDate: moment().format("YYYY-MM-DD"),
