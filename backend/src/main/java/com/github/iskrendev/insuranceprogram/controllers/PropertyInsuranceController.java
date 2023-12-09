@@ -52,6 +52,11 @@ public class PropertyInsuranceController {
         return propertyInsuranceService.updatePropertyInsurance(id, propertyInsuranceUpdateDTO);
     }
 
+    @DeleteMapping("/{id}")
+    public void deletePropertyInsurance(@PathVariable String id) {
+        propertyInsuranceService.deletePropertyInsurance(id);
+    }
+
     @ExceptionHandler(NoSuchInsuranceException.class)
     public ResponseEntity<String> handleNoSuchInsuranceException(NoSuchInsuranceException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
