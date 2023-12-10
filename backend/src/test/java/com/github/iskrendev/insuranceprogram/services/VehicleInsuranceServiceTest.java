@@ -251,4 +251,11 @@ class VehicleInsuranceServiceTest {
         verify(mockVehicleInsuranceRepo).findById("invalidId");
         verify(mockVehicleInsuranceRepo, never()).save(any(VehicleInsurance.class));
     }
+
+    @Test
+    void deleteVehicleInsurance() {
+        String vehicleInsuranceId = "1";
+        vehicleInsuranceService.deleteVehicleInsurance(vehicleInsuranceId);
+        verify(mockVehicleInsuranceRepo).deleteById(vehicleInsuranceId);
+    }
 }

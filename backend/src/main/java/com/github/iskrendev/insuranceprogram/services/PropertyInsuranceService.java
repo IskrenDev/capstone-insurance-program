@@ -3,7 +3,6 @@ package com.github.iskrendev.insuranceprogram.services;
 import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
 import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
 import com.github.iskrendev.insuranceprogram.models.PropertyInsuranceUpdateDTO;
-import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
 import com.github.iskrendev.insuranceprogram.repositories.PropertyInsuranceRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,5 +48,9 @@ public class PropertyInsuranceService {
                 .build();
 
         return propertyInsuranceRepo.save(updatedPropertyInsurance);
+    }
+
+    public void deletePropertyInsurance(String id) {
+        propertyInsuranceRepo.deleteById(id);
     }
 }

@@ -1,7 +1,6 @@
 package com.github.iskrendev.insuranceprogram.services;
 
 import com.github.iskrendev.insuranceprogram.exceptions.NoSuchInsuranceException;
-import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
 import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
 import com.github.iskrendev.insuranceprogram.models.VehicleInsuranceUpdateDTO;
 import com.github.iskrendev.insuranceprogram.repositories.VehicleInsuranceRepo;
@@ -50,5 +49,8 @@ public class VehicleInsuranceService {
                 .build();
 
         return vehicleInsuranceRepo.save(updatedVehicleInsurance);
+    }
+    public void deleteVehicleInsurance(String id) {
+        vehicleInsuranceRepo.deleteById(id);
     }
 }

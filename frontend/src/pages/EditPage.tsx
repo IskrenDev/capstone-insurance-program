@@ -1,4 +1,5 @@
-import "./AddPage.css";
+import "./EditPage.css";
+import '../modals/DeleteConfirmationModal.css';
 import {useEffect, useState} from 'react';
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
@@ -6,6 +7,7 @@ import FormLabel from "../components/content/FormLabel.tsx";
 import moment from "moment";
 import {Insurance} from "../types/types.ts";
 import DetailsLabel from "../components/content/DetailsLabel.tsx";
+import DeleteConfirmationModal from "../modals/DeleteConfirmationModal.tsx";
 
 function generateInitialState(): Insurance {
     return {
@@ -35,6 +37,7 @@ function generateInitialState(): Insurance {
 }
 
 function EditPage() {
+    const [showModal, setShowModal] = useState(false);
     const [insuranceData, setInsuranceData] = useState<Insurance>(generateInitialState());
     const navigate: NavigateFunction = useNavigate();
     const {type, id} = useParams();
@@ -64,11 +67,38 @@ function EditPage() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         editInsurance();
+    }
+
+    const handleDelete = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const handleConfirmDelete = () => {
+        axios
+            .delete(`/api/${type}/${id}`)
+            .then(() => {
+                navigate("/");
+            })
+            .catch((error) => {
+                console.error('Error deleting insurance data:', error);
+            });
     };
 
 
     return (
         <>
+            <button className="button-delete" onClick={handleDelete}>
+                Eintrag löschen
+            </button>
+            <DeleteConfirmationModal
+                show={showModal}
+                handleClose={handleCloseModal}
+                handleConfirm={handleConfirmDelete}
+            />
             <h2>Versicherung bearbeiten </h2>
             <div className="add-insurance">
                 <form onSubmit={handleSubmit} className="insurance-form">

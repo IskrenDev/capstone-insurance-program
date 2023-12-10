@@ -235,4 +235,11 @@ class LifeInsuranceServiceTest {
         verify(mockLifeInsuranceRepo).findById("invalidId");
         verify(mockLifeInsuranceRepo, never()).save(any(LifeInsurance.class));
     }
+
+    @Test
+    void deleteLifeInsurance() {
+        String lifeInsuranceId = "1";
+        lifeInsuranceService.deleteLifeInsurance(lifeInsuranceId);
+        verify(mockLifeInsuranceRepo).deleteById(lifeInsuranceId);
+    }
 }
