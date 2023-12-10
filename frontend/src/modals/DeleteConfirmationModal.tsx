@@ -1,3 +1,4 @@
+import React from 'react';
 import WarningIcon from '../components/svg/WarningIcon.tsx';
 
 interface DeleteConfirmationModalProps {
@@ -8,6 +9,18 @@ interface DeleteConfirmationModalProps {
 
 const DeleteConfirmationModal = (props: DeleteConfirmationModalProps) => {
     const { show, handleClose, handleConfirm } = props;
+
+    const handleCloseKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            handleClose();
+        }
+    };
+
+    const handleConfirmKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            handleConfirm();
+        }
+    };
 
     return (
         show && (
@@ -23,10 +36,20 @@ const DeleteConfirmationModal = (props: DeleteConfirmationModalProps) => {
                         <p>Sind Sie sicher, dass Sie diesen Versicherungseintrag löschen möchten?</p>
                     </div>
                     <div className="modal-footer">
-                        <div className="button-cancel" onClick={handleClose}>
+                        <div
+                            className="button-cancel"
+                            onClick={handleClose}
+                            onKeyDown={handleCloseKeyDown}
+                            tabIndex={0}
+                        >
                             Abbrechen
                         </div>
-                        <div className="button-confirm" onClick={handleConfirm}>
+                        <div
+                            className="button-confirm"
+                            onClick={handleConfirm}
+                            onKeyDown={handleConfirmKeyDown}
+                            tabIndex={0}
+                        >
                             Löschen
                         </div>
                     </div>
