@@ -10,13 +10,13 @@ interface DeleteConfirmationModalProps {
 const DeleteConfirmationModal = (props: DeleteConfirmationModalProps) => {
     const { show, handleClose, handleConfirm } = props;
 
-    const handleCloseKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const handleCloseKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
         if (event.key === 'Enter' || event.key === ' ') {
             handleClose();
         }
     };
 
-    const handleConfirmKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const handleConfirmKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
         if (event.key === 'Enter' || event.key === ' ') {
             handleConfirm();
         }
@@ -36,22 +36,20 @@ const DeleteConfirmationModal = (props: DeleteConfirmationModalProps) => {
                         <p>Sind Sie sicher, dass Sie diesen Versicherungseintrag löschen möchten?</p>
                     </div>
                     <div className="modal-footer">
-                        <div
+                        <button
                             className="button-cancel"
                             onClick={handleClose}
                             onKeyDown={handleCloseKeyDown}
-                            tabIndex={0}
                         >
                             Abbrechen
-                        </div>
-                        <div
+                        </button>
+                        <button
                             className="button-confirm"
                             onClick={handleConfirm}
                             onKeyDown={handleConfirmKeyDown}
-                            tabIndex={0}
                         >
                             Löschen
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>
