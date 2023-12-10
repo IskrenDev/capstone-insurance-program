@@ -1,0 +1,65 @@
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.centered-content {
+    display: flex;
+    align-items: center;
+    margin-left: -10px;
+}
+
+.modal-title {
+    font-size: 1.7em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.modal-body {
+    margin-bottom: 20px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-cancel,
+.button-confirm {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button-cancel {
+    background: #ccc;
+}
+
+.button-confirm {
+    background: #dc3545;
+    color: #fff;
+}
