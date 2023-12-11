@@ -75,7 +75,7 @@ function AddPage() {
 
         axios.post(saveEndpoint, newInsuranceData)
             .then(() => {
-                navigate('/')
+                navigate('/home')
             })
             .catch((error: AxiosError) => {
                 console.error('Error adding data:', error);

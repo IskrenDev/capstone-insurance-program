@@ -58,7 +58,7 @@ function EditPage() {
         const editedInsuranceData = {...insuranceData, type};
         axios
             .put(`/api/${type}/${id}`, editedInsuranceData)
-            .then(() => navigate("/"))
+            .then(() => navigate("/home"))
             .catch(error => {
                 console.error('Error updating insurance data:', error);
             });
@@ -81,7 +81,7 @@ function EditPage() {
         axios
             .delete(`/api/${type}/${id}`)
             .then(() => {
-                navigate("/");
+                navigate("/home");
             })
             .catch((error) => {
                 console.error('Error deleting insurance data:', error);
