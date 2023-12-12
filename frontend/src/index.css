@@ -26,7 +26,6 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   border: 30px solid;
@@ -54,7 +53,11 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 button:hover {
   border-color: #ffffff;
 }

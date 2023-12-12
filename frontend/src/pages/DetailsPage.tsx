@@ -1,5 +1,5 @@
-import "./AddPage.css";
 import "./DetailsPage.css";
+import "./SharedComponents.css";
 import {Link, useParams} from "react-router-dom";
 import axios, {AxiosResponse} from "axios";
 import {useEffect, useState} from "react";

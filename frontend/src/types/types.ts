@@ -60,3 +60,8 @@ export type AllInsurancesResponse = {
     propertyInsurances: Insurance[];
     vehicleInsurances: Insurance[];
 };
+
+export type AppUser = {
+    id: string,
+    login: string,
+};

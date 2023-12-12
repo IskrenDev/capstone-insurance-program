@@ -1,10 +1,10 @@
 import "./AddPage.css";
+import "./SharedComponents.css";
 import React, {useState} from 'react';
 import axios, {AxiosError} from "axios";
 import {useNavigate} from "react-router-dom";
 import FormLabel from "../components/content/FormLabel.tsx";
 import moment from "moment";
-
 
 function AddPage() {
     const [firstName, setFirstName] = useState("");

@@ -1,9 +1,10 @@
 import "./Header.css";
 import HomeIcon from "../svg/HomeIcon.tsx";
-import {Link, useLocation} from "react-router-dom";
+import LogoutIcon from "../svg/LogoutIcon.tsx";
+import { Link, useLocation } from "react-router-dom";
+import StatisticsIcon from "../svg/StatisticsIcon.tsx";
 
 function Header() {
-
     const location = useLocation();
     const isLoginPage = location.pathname === '/login';
 
@@ -12,7 +13,13 @@ function Header() {
             <header className={"header-border"}>
                 <nav className={"nav-main"}>
                     <Link to={"/home"} className="home-icon">
-                        <HomeIcon/>
+                        <HomeIcon />
+                    </Link>
+                    <Link to={"/home"} className="statistics-icon">
+                        <StatisticsIcon />
+                    </Link>
+                    <Link to={"/logout"} className="logout-icon">
+                        <LogoutIcon />
                     </Link>
                 </nav>
             </header>

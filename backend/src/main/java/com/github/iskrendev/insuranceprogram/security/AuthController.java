@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @GetMapping("/me")
-    public String getMe() {
+    public AppUser getMe() {
         var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof DefaultOAuth2User defaultOAuth2User) {
-            return defaultOAuth2User.getAttributes().get("login").toString();
+            return AppUser.builder()
+                    .id(Integer.parseInt(defaultOAuth2User.getAttributes().get("id").toString()))
+                    .login(defaultOAuth2User.getAttributes().get("login").toString())
+                    .build();
         }
-        return "anonymous";
+        throw new IllegalArgumentException("No user logged in");
     }
 }
