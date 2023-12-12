@@ -18,7 +18,7 @@ function Header() {
                     <Link to={"/home"} className="statistics-icon">
                         <StatisticsIcon />
                     </Link>
-                    <Link to={"/logout"} className="logout-icon">
+                    <Link to={"/login"} className="logout-icon">
                         <LogoutIcon />
                     </Link>
                 </nav>

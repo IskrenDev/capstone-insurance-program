@@ -4,11 +4,17 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 function LoginPage() {
-    const [appUser, setAppUser] = useState<AppUser>();
+    const [appUser, setAppUser] = useState<AppUser | null>();
     function login() {
         const host = window.location.host === 'localhost:5173' ? 'http://localhost:8080' : window.location.origin
 
         window.open(host + '/oauth2/authorization/github', '_self')
+    }
+
+    function logout() {
+        const host = window.location.host === 'localhost:5173' ? 'http://localhost:8080' : window.location.origin
+
+        window.open(host + '/logout', '_self')
     }
 
     useEffect(() => {
@@ -24,6 +30,7 @@ function LoginPage() {
                 appUser && (
                     <>
                         <h3>Sie sind als {appUser?.login} angemeldet</h3>
+                        <button onClick={logout}>Logout</button>
                     </>
                 )
             }

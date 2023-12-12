@@ -65,3 +65,7 @@ export type AppUser = {
     id: string,
     login: string,
 };
+
+export type ProtectedRoutesProps = {
+    appUser: AppUser | null;
+};
