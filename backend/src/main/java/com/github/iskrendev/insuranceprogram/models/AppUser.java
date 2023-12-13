@@ -1,4 +1,4 @@
-package com.github.iskrendev.insuranceprogram.security;
+package com.github.iskrendev.insuranceprogram.models;
 
 import lombok.Builder;
 import org.springframework.data.annotation.Id;

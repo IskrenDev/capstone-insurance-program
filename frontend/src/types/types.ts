@@ -67,5 +67,5 @@ export type AppUser = {
 };
 
 export type ProtectedRoutesProps = {
-    appUser: AppUser | null;
+    appUser: AppUser | null | undefined;
 };
