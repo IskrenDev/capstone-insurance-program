@@ -25,19 +25,17 @@ function HomePage() {
     }, []);
 
     return (
-        <>
         <div className="overview-container">
             <h1 className="overview-title">Übersicht</h1>
             <button className="button-add">
                 <Link to="/insurances/add">Neue Versicherung</Link>
             </button>
-                <div className="column-container">
-                    <InsuranceList insurances={lifeInsurances} headerText="Lebensversicherungen" type="life"/>
-                    <InsuranceList insurances={propertyInsurances} headerText="Immobilienversicherungen" type="property"/>
-                    <InsuranceList insurances={vehicleInsurances} headerText="Kfz-Versicherungen" type="vehicle"/>
-                </div>
+            <div className="column-container">
+                <InsuranceList insurances={lifeInsurances} headerText="Lebensversicherungen" type="life"/>
+                <InsuranceList insurances={propertyInsurances} headerText="Immobilienversicherungen" type="property"/>
+                <InsuranceList insurances={vehicleInsurances} headerText="Kfz-Versicherungen" type="vehicle"/>
             </div>
-        </>
+        </div>
     );
 }
 

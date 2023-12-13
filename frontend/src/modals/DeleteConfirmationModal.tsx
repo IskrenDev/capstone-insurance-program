@@ -9,7 +9,7 @@ interface DeleteConfirmationModalProps {
 }
 
 const DeleteConfirmationModal = (props: DeleteConfirmationModalProps) => {
-    const { show, handleClose, handleConfirm } = props;
+    const {show, handleClose, handleConfirm} = props;
 
     const handleCloseKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
         if (event.key === 'Enter' || event.key === ' ') {
@@ -28,10 +28,8 @@ const DeleteConfirmationModal = (props: DeleteConfirmationModalProps) => {
             <div className="modal-container">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <div className="centered-content">
-                            <WarningIcon />
-                            <div className="modal-title">Bestätigung</div>
-                        </div>
+                        <WarningIcon/>
+                        <div className="modal-title">Bestätigung</div>
                     </div>
                     <div className="modal-body">
                         <p>Sind Sie sicher, dass Sie diesen Versicherungseintrag löschen möchten?</p>
