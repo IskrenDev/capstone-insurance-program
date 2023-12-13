@@ -26,7 +26,6 @@ function HomePage() {
     }, []);
 
     return (
-        <>
             <div className="overview-container">
                 <h1 className="overview-title">Übersicht</h1>
                 <button className="button-add">
@@ -38,7 +37,6 @@ function HomePage() {
                     <InsuranceList insurances={vehicleInsurances} headerText="Kfz-Versicherungen" type="vehicle"/>
                 </div>
             </div>
-        </>
     );
 }
 
