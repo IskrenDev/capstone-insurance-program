@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${myapp.environment}")
+    @Value("local")
     private String environment;
 
     @Bean
