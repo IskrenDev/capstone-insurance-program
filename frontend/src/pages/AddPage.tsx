@@ -1,10 +1,9 @@
-import "./AddPage.css";
+import "./SharedComponents.css";
 import React, {useState} from 'react';
 import axios, {AxiosError} from "axios";
 import {useNavigate} from "react-router-dom";
 import FormLabel from "../components/content/FormLabel.tsx";
 import moment from "moment";
-
 
 function AddPage() {
     const [firstName, setFirstName] = useState("");
@@ -103,7 +102,7 @@ function AddPage() {
                                    handleOnChangeText={setCity}/>
                         <FormLabel label="Adresse" name="address" type="text" value={address}
                                    handleOnChangeText={setAddress}/>
-                        <FormLabel label="Telefon" name="telephone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                        <FormLabel label="Telefon" name="telephone" type="tel" pattern="^[0-9]{1,15}$"
                                    value={telephone} handleOnChangeText={setTelephone}/>
                         <FormLabel label="E-Mail" name="email" type="email" value={email}
                                    handleOnChangeText={setEmail}/>

@@ -1,6 +1,7 @@
 import {InsuranceListProps} from "../../types/types.ts";
 import {Link} from "react-router-dom";
 import {useState} from "react";
+import "../../pages/SharedComponents.css"
 
 function InsuranceList(props: Readonly<InsuranceListProps>) {
     const [sortedInsurances, setSortedInsurances] = useState([...props.insurances]);
@@ -27,14 +28,12 @@ function InsuranceList(props: Readonly<InsuranceListProps>) {
 
     return (
         <div className="column">
+            <h2>{props.headerText}</h2>
             <div className="header-container">
-                <button className="accordion-button" onClick={handleAccordionToggle}>
-                    {isAccordionOpen ? "+" : "-"}
+                <button className={`accordion-button ${isAccordionOpen ? "minus" : "plus"}`} onClick={handleAccordionToggle}></button>
+                <button className={`sort-button`} onClick={handleSortToggle}>
+                    {sortOrder === "asc" ? <span className="asc-icon"></span> : <span className="desc-icon"></span>}
                 </button>
-                <button className="sort-button" onClick={handleSortToggle}>
-                    {sortOrder === "asc" ? "▲" : "▼"}
-                </button>
-                <h2>{props.headerText}</h2>
             </div>
             {isAccordionOpen && (
                 <ul>

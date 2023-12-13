@@ -1,4 +1,5 @@
 import React from 'react';
+import '../modals/DeleteConfirmationModal.css';
 import WarningIcon from '../components/svg/WarningIcon.tsx';
 
 interface DeleteConfirmationModalProps {
