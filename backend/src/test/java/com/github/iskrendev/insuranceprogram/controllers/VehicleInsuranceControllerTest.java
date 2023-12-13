@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -32,6 +33,7 @@ class VehicleInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllVehicleInsurances_whenNoVehicleInsuranceIsInList_thenReturnEmptyList() throws Exception {
         mockMvc.perform(get(BASE_URI))
                 .andExpect(status().isOk())
@@ -40,6 +42,7 @@ class VehicleInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllVehicleInsurances_whenListContainsInsurances_thenReturnListOfInsurances() throws Exception {
         VehicleInsurance vehicleInsurance = VehicleInsurance.builder()
                 .id("1")
@@ -71,6 +74,7 @@ class VehicleInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getVehicleInsuranceById_whenIdIsValid_thenReturnInsurance() throws Exception {
         VehicleInsurance vehicleInsurance = VehicleInsurance.builder()
                 .id("1")
@@ -100,6 +104,7 @@ class VehicleInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getVehicleInsuranceById_whenIdIsNotValid_thenThrowException() throws Exception {
         mockMvc.perform(get(BASE_URI + "/invalidId"))
                 .andExpect(status().isNotFound())
@@ -108,6 +113,7 @@ class VehicleInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void addVehicleInsurance_whenDataIsComplete_thenReturnCompleteInsurance() throws Exception {
         VehicleInsuranceDTO newVehicleInsurance = VehicleInsuranceDTO.builder()
                 .firstName("TestFirstName")
@@ -137,6 +143,7 @@ class VehicleInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void addVehicleInsurance_whenJustOneFieldIsFilledOut_thenReturnNullForEmptyFields() throws Exception {
         VehicleInsuranceDTO newVehicleInsurance = VehicleInsuranceDTO.builder()
                 .firstName("TestFirstName")
@@ -167,6 +174,7 @@ class VehicleInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void updateVehicleInsurance_whenInsuranceIdExistsInDb_thenReturnUpdatedInsurance() throws Exception {
         VehicleInsurance vehicleInsuranceBefore = VehicleInsurance.builder()
                 .id("1")
@@ -243,6 +251,7 @@ class VehicleInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void updateVehicleInsurance_whenInsuranceIdDoesNotExistsInDb_thenThrowException() throws Exception {
         VehicleInsuranceUpdateDTO vehicleInsuranceUpdateDTO = VehicleInsuranceUpdateDTO.builder()
                 .firstName("TestFirstName")
@@ -272,6 +281,7 @@ class VehicleInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void deleteVehicleInsurance() throws Exception {
         VehicleInsurance vehicleInsurance = VehicleInsurance.builder()
                 .id("1")

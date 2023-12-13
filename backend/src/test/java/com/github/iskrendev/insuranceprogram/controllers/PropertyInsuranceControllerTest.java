@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -32,6 +33,7 @@ class PropertyInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllPropertyInsurances_whenNoPropertyInsuranceIsInList_thenReturnEmptyList() throws Exception {
         mockMvc.perform(get(BASE_URI))
                 .andExpect(status().isOk())
@@ -40,6 +42,7 @@ class PropertyInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllPropertyInsurances_whenOnePropertyInsuranceIsInList_thenReturnList() throws Exception {
         PropertyInsurance propertyInsurance = PropertyInsurance.builder()
                 .id("1")
@@ -71,6 +74,7 @@ class PropertyInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getPropertyInsuranceById_whenIdIsValid_thenReturnInsurance() throws Exception {
         PropertyInsurance propertyInsurance = PropertyInsurance.builder()
                 .id("1")
@@ -100,6 +104,7 @@ class PropertyInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getPropertyInsuranceById_whenIdIsNotValid_thenThrowException() throws Exception {
         mockMvc.perform(get(BASE_URI + "/invalidId"))
                 .andExpect(status().isNotFound())
@@ -108,6 +113,7 @@ class PropertyInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void addPropertyInsurance_whenDataIsComplete_thenReturnCompleteInsurance() throws Exception {
         PropertyInsuranceDTO newPropertyInsurance = PropertyInsuranceDTO.builder()
                 .firstName("TestFirstName")
@@ -137,6 +143,7 @@ class PropertyInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void addPropertyInsurance_whenJustOneFieldIsFilledOut_thenReturnNullForEmptyFields() throws Exception {
         PropertyInsuranceDTO newPropertyInsurance = PropertyInsuranceDTO.builder()
                 .firstName("TestFirstName")
@@ -166,6 +173,7 @@ class PropertyInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void updatePropertyInsurance_whenInsuranceIdExistsInDb_thenReturnUpdatedInsurance() throws Exception {
         PropertyInsurance propertyInsuranceBefore = PropertyInsurance.builder()
                 .id("1")
@@ -239,6 +247,7 @@ class PropertyInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void updatePropertyInsurance_whenInsuranceIdDoesNotExistsInDb_thenThrowException() throws Exception {
         PropertyInsuranceUpdateDTO propertyInsuranceUpdateDTO = PropertyInsuranceUpdateDTO.builder()
                 .firstName("TestFirstName")
@@ -267,6 +276,7 @@ class PropertyInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void deletePropertyInsurance() throws Exception {
         PropertyInsurance propertyInsurance = PropertyInsurance.builder()
                 .id("1")

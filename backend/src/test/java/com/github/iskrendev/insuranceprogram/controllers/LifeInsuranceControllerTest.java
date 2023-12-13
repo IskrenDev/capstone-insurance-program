@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -34,6 +35,7 @@ class LifeInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllLifeInsurances_whenNoLifeInsuranceIsInList_thenReturnEmptyList() throws Exception {
         mockMvc.perform(get(BASE_URI))
                 .andExpect(status().isOk())
@@ -42,6 +44,7 @@ class LifeInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllLifeInsurances_whenOneLifeInsuranceIsInList_thenReturnList() throws Exception {
         LifeInsurance lifeInsurance = LifeInsurance.builder()
                 .id("1")
@@ -72,6 +75,7 @@ class LifeInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getLifeInsuranceById_whenIdIsValid_thenReturnInsurance() throws Exception {
         LifeInsurance lifeInsurance = LifeInsurance.builder()
                 .id("1")
@@ -100,6 +104,7 @@ class LifeInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getLifeInsuranceById_whenIdIsNotValid_thenThrowException() throws Exception {
         mockMvc.perform(get(BASE_URI + "/invalidId"))
                 .andExpect(status().isNotFound())
@@ -108,6 +113,7 @@ class LifeInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void addLifeInsurance_whenDataIsComplete_thenReturnCompleteInsurance() throws Exception {
         LifeInsuranceDTO newLifeInsurance = LifeInsuranceDTO.builder()
                 .firstName("TestFirstName")
@@ -136,6 +142,7 @@ class LifeInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void addLifeInsurance_whenJustOneFieldIsFilledOut_thenReturnNullForEmptyFields() throws Exception {
         LifeInsuranceDTO newLifeInsurance = LifeInsuranceDTO.builder()
                 .firstName("TestFirstName")
@@ -163,6 +170,7 @@ class LifeInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void updateLifeInsurance_whenInsuranceIdExistsInDb_thenReturnUpdatedInsurance() throws Exception {
         LifeInsurance lifeInsuranceBefore = LifeInsurance.builder()
                 .id("1")
@@ -233,6 +241,7 @@ class LifeInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void updateLifeInsurance_whenInsuranceIdDoesNotExistsInDb_thenThrowException() throws Exception {
         LifeInsuranceUpdateDTO lifeInsuranceUpdateDTO = LifeInsuranceUpdateDTO.builder()
                 .firstName("TestFirstName")
@@ -260,6 +269,7 @@ class LifeInsuranceControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void deleteLifeInsurance() throws Exception {
         LifeInsurance lifeInsurance = LifeInsurance.builder()
                 .id("1")
