@@ -35,6 +35,10 @@
     margin-bottom: -10px;
 }
 
+.form-section input {
+    padding-right: 140px;
+}
+
 .form-section input[name="type"] {
     visibility: hidden;
 }
