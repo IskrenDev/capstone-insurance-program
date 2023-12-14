@@ -1,5 +1,5 @@
 import "./EditPage.css";
-import '../modals/DeleteConfirmationModal.css';
+import "./SharedComponents.css";
 import {useEffect, useState} from 'react';
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
@@ -99,8 +99,8 @@ function EditPage() {
                 handleClose={handleCloseModal}
                 handleConfirm={handleConfirmDelete}
             />
-            <h2>Versicherung bearbeiten </h2>
-            <div className="add-insurance">
+            <h2>Versicherung bearbeiten</h2>
+            <div className="edit-insurance">
                 <form onSubmit={handleSubmit} className="insurance-form">
                     <div className="form-section">
                         <FormLabel
@@ -144,7 +144,7 @@ function EditPage() {
                             label="Telefon"
                             name="telephone"
                             type="tel"
-                            pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                            pattern="^[0-9]{1,15}$"
                             value={insuranceData.telephone}
                             handleOnChangeText={(value) => setInsuranceData((prev) => ({...prev, telephone: value}))}
                         />
