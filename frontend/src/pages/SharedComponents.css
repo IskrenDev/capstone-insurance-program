@@ -1,0 +1,123 @@
+.insurance-form {
+    display: flex;
+    margin-top: -25px;
+}
+
+.form-section {
+    flex: 1;
+    padding: 70px;
+    box-sizing: border-box;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+}
+
+.form-section label {
+    margin-bottom: 12px;
+    width: 100%;
+    display: block;
+    font-weight: bold;
+}
+
+.form-section label span {
+    display: inline-block;
+    width: 150px;
+    margin-right: 10px;
+}
+
+.form-section input,
+.form-section select,
+.form-section textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: -10px;
+}
+
+.form-section input {
+    padding-right: 140px;
+}
+
+.form-section input[name="type"] {
+    visibility: hidden;
+}
+
+.overview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.overview-title {
+    margin-bottom: 60px;
+}
+
+.accordion-button,
+.sort-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: right;
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-button {
+    margin-right: 10px;
+}
+
+.sort-button {
+    margin-right: -5px;
+}
+
+.asc-icon::before,
+.desc-icon::before {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.asc-icon::before {
+    content: '\25B4';
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.desc-icon::before {
+    content: '\25BE';
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.plus::before {
+    content: '\002B';
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.minus::before {
+    content: '\2212';
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.button-container {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.button-save {
+    width: 250px;
+    height: 40px;
+    position: absolute;
+    left: 50%;
+    bottom: 5%;
+    transform: translateX(-50%);
+    color: #f5f5f5;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
+}

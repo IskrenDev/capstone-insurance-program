@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -44,6 +45,7 @@ class AllInsurancesControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllInsurances_whenNoInsurancesAreInLists_thenReturnEmptyLists() throws Exception {
         mockMvc.perform(get(BASE_URI))
                 .andExpect(jsonPath("$.lifeInsurances", hasSize(0)))
@@ -53,6 +55,7 @@ class AllInsurancesControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllInsurances_whenOneInsuranceIsInEachList_thenReturnLists() throws Exception {
         LifeInsurance lifeInsurance = LifeInsurance.builder()
                 .id("1")

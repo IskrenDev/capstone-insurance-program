@@ -1,5 +1,5 @@
 import "./EditPage.css";
-import '../modals/DeleteConfirmationModal.css';
+import "./SharedComponents.css";
 import {useEffect, useState} from 'react';
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
@@ -58,7 +58,7 @@ function EditPage() {
         const editedInsuranceData = {...insuranceData, type};
         axios
             .put(`/api/${type}/${id}`, editedInsuranceData)
-            .then(() => navigate("/"))
+            .then(() => navigate("/home"))
             .catch(error => {
                 console.error('Error updating insurance data:', error);
             });
@@ -81,7 +81,7 @@ function EditPage() {
         axios
             .delete(`/api/${type}/${id}`)
             .then(() => {
-                navigate("/");
+                navigate("/home");
             })
             .catch((error) => {
                 console.error('Error deleting insurance data:', error);
@@ -99,8 +99,8 @@ function EditPage() {
                 handleClose={handleCloseModal}
                 handleConfirm={handleConfirmDelete}
             />
-            <h2>Versicherung bearbeiten </h2>
-            <div className="add-insurance">
+            <h2>Versicherung bearbeiten</h2>
+            <div className="edit-insurance">
                 <form onSubmit={handleSubmit} className="insurance-form">
                     <div className="form-section">
                         <FormLabel
