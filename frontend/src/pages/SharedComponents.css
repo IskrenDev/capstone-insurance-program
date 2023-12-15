@@ -15,14 +15,15 @@
 
 .form-section label {
     margin-bottom: 12px;
-    width: 100%;
+    width: 244px;
+    height: 30px;
     display: block;
     font-weight: bold;
 }
 
 .form-section label span {
     display: inline-block;
-    width: 150px;
+    width: 244px;
     margin-right: 10px;
 }
 
@@ -33,10 +34,6 @@
     padding: 10px;
     box-sizing: border-box;
     margin-bottom: -10px;
-}
-
-.form-section input {
-    padding-right: 140px;
 }
 
 .form-section input[name="type"] {
