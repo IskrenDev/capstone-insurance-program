@@ -1,50 +1,51 @@
 import {InsuranceListProps} from "../../types/types.ts";
 import {Link} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import "../../pages/SharedComponents.css"
 
 function InsuranceList(props: Readonly<InsuranceListProps>) {
-    const [sortedInsurances, setSortedInsurances] = useState([...props.insurances]);
-    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-    const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-    const [isListRendered, setIsListRendered] = useState(false);
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [isAscending, setIsAscending] = useState<boolean>(true);
+    const [sortedInsurances, setSortedInsurances] = useState(props.insurances);
 
-    const handleAccordionToggle = () => {
-        setIsAccordionOpen(!isAccordionOpen);
-        setIsListRendered(true);
+    const handleAccordionClick = () => {
+        setIsExpanded(!isExpanded);
     };
 
-    const handleSortToggle = () => {
-        if (isListRendered) {
-            const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
-            setSortOrder(newSortOrder);
-
-            const sorted = [...props.insurances].sort((a, b) => {
-                const nameA = `${a.firstName} ${a.familyName}`.toUpperCase();
-                const nameB = `${b.firstName} ${b.familyName}`.toUpperCase();
-
-                return newSortOrder === "asc" ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-            });
-
-            setSortedInsurances(sorted);
-        }
+    const handleSortClick = () => {
+        setIsAscending(!isAscending);
     };
+
+    useEffect(() => {
+        // Sort the insurances when isExpanded changes
+        const sorted = [...props.insurances].sort((a, b) => {
+            return isAscending
+                ? a.firstName.localeCompare(b.firstName)
+                : b.firstName.localeCompare(a.firstName);
+        });
+
+        setSortedInsurances(sorted);
+    }, [isExpanded, isAscending, props.insurances]);
 
     return (
         <div className="column">
             <h2>{props.headerText}</h2>
             <div className="header-container">
                 <button
-                    className={`accordion-button ${isAccordionOpen ? "minus" : "plus"}`}
-                    onClick={handleAccordionToggle}
+                    className={`accordion-button ${isExpanded ? 'minus' : 'plus'}`}
+                    onClick={handleAccordionClick}
                 ></button>
-                {isListRendered && (
-                    <button className={`sort-button`} onClick={handleSortToggle}>
-                        {sortOrder === "asc" ? <span className="asc-icon"></span> : <span className="desc-icon"></span>}
+                {isExpanded && (
+                    <button className="sort-button" onClick={handleSortClick}>
+                        {isAscending ? (
+                            <span className="asc-icon"></span>
+                        ) : (
+                            <span className="desc-icon"></span>
+                        )}
                     </button>
                 )}
             </div>
-            {isAccordionOpen && (
+            {isExpanded && (
                 <ul>
                     {sortedInsurances.map((insurance) => (
                         <li key={insurance.id}>
