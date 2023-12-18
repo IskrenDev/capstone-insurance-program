@@ -1,1 +1,1 @@
-# capstone-insurance-program
+# Insurance Manager Plus
