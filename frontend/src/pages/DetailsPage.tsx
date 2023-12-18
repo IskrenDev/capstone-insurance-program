@@ -53,7 +53,6 @@ function DetailsPage() {
                                           {value: "VEHICLE", label: "Kfz-Versicherung"},
                                       ]}
                         />
-                        <br/>
 
                         {insurance.type === "LIFE" && (
                             <>

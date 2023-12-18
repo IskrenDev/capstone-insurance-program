@@ -113,7 +113,7 @@ function FormLabel(props: Readonly<FormLabelProps>) {
                     />
                 )}
             </label>
-            {props.name !== "type" && <br/>}
+            <br/>
         </div>
     );
 }
