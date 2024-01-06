@@ -30,7 +30,7 @@ public record PropertyInsurance(
         Integer constructionYear
 
 ) {
-    public BigDecimal calculateInsuranceAmount(int duration, BigDecimal paymentPerMonth) {
-        return BigDecimal.valueOf(duration).multiply(paymentPerMonth);
+    public BigDecimal calculateInsuranceAmount() {
+        return BigDecimal.valueOf(this.duration).multiply(this.paymentPerMonth);
     }
 }
