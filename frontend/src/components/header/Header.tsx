@@ -11,7 +11,9 @@ function Header() {
                 <Link to={"/"} className="home-icon">
                     <HomeIcon/>
                 </Link>
-                <StatisticsIcon/>
+                <Link to={"/insurances/statistics"} className="statistics-icon">
+                    <StatisticsIcon/>
+                </Link>
                 <LogoutIcon/>
             </nav>
         </header>
