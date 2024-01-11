@@ -1,5 +1,6 @@
 package com.github.iskrendev.insuranceprogram.services;
 
+import com.github.iskrendev.insuranceprogram.models.InsuranceSummaryDTO;
 import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
 import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
 import com.github.iskrendev.insuranceprogram.models.VehicleInsurance;
@@ -17,6 +18,18 @@ public class InsuranceSummaryService {
     private PropertyInsuranceRepo propertyInsuranceRepo;
     private VehicleInsuranceRepo vehicleInsuranceRepo;
 
+    public long countLifeInsurances() {
+        return lifeInsuranceRepo.count();
+    }
+
+    public long countPropertyInsurances() {
+        return propertyInsuranceRepo.count();
+    }
+
+    public long countVehicleInsurances() {
+        return vehicleInsuranceRepo.count();
+    }
+
     public BigDecimal calculateTotalInsuranceAmount() {
         BigDecimal totalLifeInsurance = lifeInsuranceRepo.findAll().stream()
                 .map(LifeInsurance::calculateInsuranceAmount)
@@ -29,5 +42,14 @@ public class InsuranceSummaryService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return totalLifeInsurance.add(totalPropertyInsurance).add(totalVehicleInsurance);
+    }
+
+    public InsuranceSummaryDTO getInsuranceSummary() {
+        BigDecimal totalAmount = calculateTotalInsuranceAmount();
+        long lifeCount = countLifeInsurances();
+        long propertyCount = countPropertyInsurances();
+        long vehicleCount = countVehicleInsurances();
+
+        return new InsuranceSummaryDTO(totalAmount, lifeCount, propertyCount, vehicleCount);
     }
 }
