@@ -36,15 +36,15 @@ class InsuranceSummaryControllerTest {
 
     @Test
     @DirtiesContext
-    void calculateTotalInsuranceAmount_whenNoInsurancesInLists_thenReturn0() throws Exception {
-        mockMvc.perform(get(BASE_URI + "/total-amount"))
+    void getInsuranceSummary_whenNoInsurancesInRepos_thenReturn0() throws Exception {
+        mockMvc.perform(get(BASE_URI))
                 .andExpect(status().isOk())
-                .andExpect(content().string("0"));
+                .andExpect(content().json("{\"totalAmount\":0,\"lifeInsuranceCount\":0,\"propertyInsuranceCount\":0,\"vehicleInsuranceCount\":0}"));
     }
 
     @Test
     @DirtiesContext
-    void calculateTotalInsuranceAmount_whenOneInsuranceInEachList_thenReturnTotalAmount() throws Exception {
+    void getInsuranceSummary_whenOneInsuranceInEachRepo_thenReturnCorrectCountsAndTotalAmount() throws Exception {
         LifeInsurance lifeInsurance = LifeInsurance.builder()
                 .id("1")
                 .firstName("TestFirstName")
@@ -105,8 +105,8 @@ class InsuranceSummaryControllerTest {
         propertyInsuranceRepo.save(propertyInsurance);
         vehicleInsuranceRepo.save(vehicleInsurance);
 
-        mockMvc.perform(get("/api/summary/total-amount"))
+        mockMvc.perform(get(BASE_URI))
                 .andExpect(status().isOk())
-                .andExpect(content().string("10800"));
+                .andExpect(content().json("{\"totalAmount\":10800,\"lifeInsuranceCount\":1,\"propertyInsuranceCount\":1,\"vehicleInsuranceCount\":1}"));
     }
 }
