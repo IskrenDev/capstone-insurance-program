@@ -1,0 +1,17 @@
+.chart-container {
+    height: 400px;
+    width: 500px;
+}
+
+.chart-title {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.total-amount {
+    font-size: 24px;
+}
+
+.bold-text {
+    font-weight: bold;
+}
