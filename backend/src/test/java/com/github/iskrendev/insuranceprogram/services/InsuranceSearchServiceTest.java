@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -338,6 +339,22 @@ class InsuranceSearchServiceTest {
     }
 
     @Test
+    void searchInsuranceByName_whenNameDoesNotExist_thenReturnEmptyList() {
+        //GIVEN
+        when(mockLifeInsuranceRepo.findByFirstName("NonExistentName")).thenReturn(Collections.emptyList());
+        when(mockPropertyInsuranceRepo.findByFirstName("NonExistentName")).thenReturn(Collections.emptyList());
+        when(mockVehicleInsuranceRepo.findByFirstName("NonExistentName")).thenReturn(Collections.emptyList());
+        //WHEN
+        List<LifeInsurance> actualLifeResult = insuranceSearchService.searchLifeInsuranceByName("NonExistentName", null);
+        List<PropertyInsurance> actualPropertyResult = insuranceSearchService.searchPropertyInsuranceByName("NonExistentName", null);
+        List<VehicleInsurance> actualVehicleResult = insuranceSearchService.searchVehicleInsuranceByName("NonExistentName", null);
+        //THEN
+        assertTrue(actualLifeResult.isEmpty());
+        assertTrue(actualPropertyResult.isEmpty());
+        assertTrue(actualVehicleResult.isEmpty());
+    }
+
+    @Test
     void searchAllInsurancesByName_whenNoFirstOrFamilyNameAsInput_throwsInvalidSearchCriteriaException() {
         assertThrows(InvalidSearchCriteriaException.class, () -> {
             insuranceSearchService.searchAllInsurancesByName(null, null);
@@ -352,6 +369,20 @@ class InsuranceSearchServiceTest {
         verify(mockVehicleInsuranceRepo, never()).findByFirstNameAndFamilyName(any(), any());
         verify(mockVehicleInsuranceRepo, never()).findByFirstName(any());
         verify(mockVehicleInsuranceRepo, never()).findByFamilyName(any());
+    }
+
+    @Test
+    void searchAllInsurancesByName_whenNameDoesNotExist_thenReturnEmptyResponseObject() {
+        //GIVEN
+        when(mockLifeInsuranceRepo.findByFirstName("NonExistentName")).thenReturn(Collections.emptyList());
+        when(mockPropertyInsuranceRepo.findByFirstName("NonExistentName")).thenReturn(Collections.emptyList());
+        when(mockVehicleInsuranceRepo.findByFirstName("NonExistentName")).thenReturn(Collections.emptyList());
+        //WHEN
+        AllInsurancesResponse actual = insuranceSearchService.searchAllInsurancesByName("NonExistentName", null);
+        //THEN
+        assertTrue(actual.lifeInsurances().isEmpty());
+        assertTrue(actual.propertyInsurances().isEmpty());
+        assertTrue(actual.vehicleInsurances().isEmpty());
     }
 
     @Test

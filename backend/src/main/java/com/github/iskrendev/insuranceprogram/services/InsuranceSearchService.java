@@ -11,7 +11,6 @@ import com.github.iskrendev.insuranceprogram.repositories.VehicleInsuranceRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
