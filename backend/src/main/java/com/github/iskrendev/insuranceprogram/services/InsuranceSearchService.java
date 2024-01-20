@@ -1,5 +1,6 @@
 package com.github.iskrendev.insuranceprogram.services;
 
+import com.github.iskrendev.insuranceprogram.exceptions.InvalidSearchCriteriaException;
 import com.github.iskrendev.insuranceprogram.models.AllInsurancesResponse;
 import com.github.iskrendev.insuranceprogram.models.LifeInsurance;
 import com.github.iskrendev.insuranceprogram.models.PropertyInsurance;
@@ -53,7 +54,7 @@ public class InsuranceSearchService {
         } else if (familyName != null && !familyName.isEmpty()) {
             return searchFamilyName.apply(null, familyName);
         } else {
-            return new ArrayList<>();
+            throw new InvalidSearchCriteriaException("Both firstName and familyName cannot be null or empty.");
         }
     }
 
