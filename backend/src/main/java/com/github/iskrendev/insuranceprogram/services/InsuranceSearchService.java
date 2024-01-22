@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -46,14 +47,19 @@ public class InsuranceSearchService {
                                         BiFunction<String, String, List<T>> searchBothNames,
                                         BiFunction<String, String, List<T>> searchFirstName,
                                         BiFunction<String, String, List<T>> searchFamilyName) {
-        if (firstName != null && !firstName.isEmpty() && familyName != null && !familyName.isEmpty()) {
-            return searchBothNames.apply(firstName, familyName);
-        } else if (firstName != null && !firstName.isEmpty()) {
-            return searchFirstName.apply(firstName, null);
-        } else if (familyName != null && !familyName.isEmpty()) {
-            return searchFamilyName.apply(null, familyName);
-        } else {
+        if ((firstName == null || firstName.isEmpty()) && (familyName == null || familyName.isEmpty())) {
             throw new InvalidSearchCriteriaException("Both firstName and familyName cannot be null or empty.");
+        }
+
+        String firstNameRegex = firstName != null && !firstName.isEmpty() ? "^" + Pattern.quote(firstName) + "$" : null;
+        String familyNameRegex = familyName != null && !familyName.isEmpty() ? "^" + Pattern.quote(familyName) + "$" : null;
+
+        if (firstNameRegex != null && familyNameRegex != null) {
+            return searchBothNames.apply(firstNameRegex, familyNameRegex);
+        } else if (firstNameRegex != null) {
+            return searchFirstName.apply(firstNameRegex, null);
+        } else {
+            return searchFamilyName.apply(null, familyNameRegex);
         }
     }
 
