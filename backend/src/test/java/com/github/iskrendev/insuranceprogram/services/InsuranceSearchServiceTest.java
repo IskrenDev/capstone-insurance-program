@@ -10,6 +10,7 @@ import com.github.iskrendev.insuranceprogram.repositories.LifeInsuranceRepo;
 import com.github.iskrendev.insuranceprogram.repositories.PropertyInsuranceRepo;
 import com.github.iskrendev.insuranceprogram.repositories.VehicleInsuranceRepo;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -59,12 +60,25 @@ class InsuranceSearchServiceTest {
                 .build();
 
         List<LifeInsurance> expected = List.of(lifeInsurance);
-        when(mockLifeInsuranceRepo.findByFirstName("TestFirstName")).thenReturn(expected);
+        when(mockLifeInsuranceRepo.findByFirstName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String firstNameRegex = invocation.getArgument(0);
+            if (firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") || firstNameRegex.equals("^\\Qtestfirstname\\E$") || firstNameRegex.equals("^\\QTestFirstName\\E$")) {
+                return expected;
+            } else {
+                return Collections.emptyList();
+            }
+        });
         //WHEN
-        List<LifeInsurance> actual = insuranceSearchService.searchLifeInsuranceByName("TestFirstName", null);
+        List<LifeInsurance> actualUpperCase = insuranceSearchService.searchLifeInsuranceByName("TESTFIRSTNAME", null);
+        List<LifeInsurance> actualLowerCase = insuranceSearchService.searchLifeInsuranceByName("testfirstname", null);
+        List<LifeInsurance> actualMixedCase = insuranceSearchService.searchLifeInsuranceByName("TestFirstName", null);
         //THEN
-        verify(mockLifeInsuranceRepo).findByFirstName("TestFirstName");
-        assertEquals(expected, actual);
+        verify(mockLifeInsuranceRepo).findByFirstName("^\\QTESTFIRSTNAME\\E$");
+        verify(mockLifeInsuranceRepo).findByFirstName("^\\Qtestfirstname\\E$");
+        verify(mockLifeInsuranceRepo).findByFirstName("^\\QTestFirstName\\E$");
+        assertEquals(expected, actualUpperCase);
+        assertEquals(expected, actualLowerCase);
+        assertEquals(expected, actualMixedCase);
     }
 
     @Test
@@ -89,12 +103,25 @@ class InsuranceSearchServiceTest {
                 .build();
 
         List<LifeInsurance> expected = List.of(lifeInsurance);
-        when(mockLifeInsuranceRepo.findByFamilyName("TestFamilyName")).thenReturn(expected);
+        when(mockLifeInsuranceRepo.findByFamilyName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String familyNameRegex = invocation.getArgument(0);
+            if (familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$") || familyNameRegex.equals("^\\Qtestfamilyname\\E$") || familyNameRegex.equals("^\\QTestFamilyName\\E$")) {
+                return expected;
+            } else {
+                return Collections.emptyList();
+            }
+        });
         //WHEN
-        List<LifeInsurance> actual = insuranceSearchService.searchLifeInsuranceByName(null, "TestFamilyName");
+        List<LifeInsurance> actualUpperCase = insuranceSearchService.searchLifeInsuranceByName(null, "TESTFAMILYNAME");
+        List<LifeInsurance> actualLowerCase = insuranceSearchService.searchLifeInsuranceByName(null, "testfamilyname");
+        List<LifeInsurance> actualMixedCase = insuranceSearchService.searchLifeInsuranceByName(null, "TestFamilyName");
         //THEN
-        verify(mockLifeInsuranceRepo).findByFamilyName("TestFamilyName");
-        assertEquals(expected, actual);
+        verify(mockLifeInsuranceRepo).findByFamilyName("^\\QTESTFAMILYNAME\\E$");
+        verify(mockLifeInsuranceRepo).findByFamilyName("^\\Qtestfamilyname\\E$");
+        verify(mockLifeInsuranceRepo).findByFamilyName("^\\QTestFamilyName\\E$");
+        assertEquals(expected, actualUpperCase);
+        assertEquals(expected, actualLowerCase);
+        assertEquals(expected, actualMixedCase);
     }
 
     @Test
@@ -119,12 +146,29 @@ class InsuranceSearchServiceTest {
                 .build();
 
         List<LifeInsurance> expected = List.of(lifeInsurance);
-        when(mockLifeInsuranceRepo.findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName")).thenReturn(expected);
+        when(mockLifeInsuranceRepo.findByFirstNameAndFamilyName(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+                .thenAnswer(invocation -> {
+                    String firstNameRegex = invocation.getArgument(0);
+                    String familyNameRegex = invocation.getArgument(1);
+                    if ((firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") && familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$")) ||
+                            (firstNameRegex.equals("^\\Qtestfirstname\\E$") && familyNameRegex.equals("^\\Qtestfamilyname\\E$")) ||
+                            (firstNameRegex.equals("^\\QTestFirstName\\E$") && familyNameRegex.equals("^\\QTestFamilyName\\E$"))) {
+                        return expected;
+                    } else {
+                        return Collections.emptyList();
+                    }
+                });
         //WHEN
-        List<LifeInsurance> actual = insuranceSearchService.searchLifeInsuranceByName("TestFirstName", "TestFamilyName");
+        List<LifeInsurance> actualUpperCase = insuranceSearchService.searchLifeInsuranceByName("TESTFIRSTNAME", "TESTFAMILYNAME");
+        List<LifeInsurance> actualLowerCase = insuranceSearchService.searchLifeInsuranceByName("testfirstname", "testfamilyname");
+        List<LifeInsurance> actualMixedCase = insuranceSearchService.searchLifeInsuranceByName("TestFirstName", "TestFamilyName");
         //THEN
-        verify(mockLifeInsuranceRepo).findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName");
-        assertEquals(expected, actual);
+        verify(mockLifeInsuranceRepo).findByFirstNameAndFamilyName("^\\QTESTFIRSTNAME\\E$", "^\\QTESTFAMILYNAME\\E$");
+        verify(mockLifeInsuranceRepo).findByFirstNameAndFamilyName("^\\Qtestfirstname\\E$", "^\\Qtestfamilyname\\E$");
+        verify(mockLifeInsuranceRepo).findByFirstNameAndFamilyName("^\\QTestFirstName\\E$", "^\\QTestFamilyName\\E$");
+        assertEquals(expected, actualUpperCase);
+        assertEquals(expected, actualLowerCase);
+        assertEquals(expected, actualMixedCase);
     }
 
     @Test
@@ -161,12 +205,25 @@ class InsuranceSearchServiceTest {
                 .build();
 
         List<PropertyInsurance> expected = List.of(propertyInsurance);
-        when(mockPropertyInsuranceRepo.findByFirstName("TestFirstName")).thenReturn(expected);
+        when(mockPropertyInsuranceRepo.findByFirstName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String firstNameRegex = invocation.getArgument(0);
+            if (firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") || firstNameRegex.equals("^\\Qtestfirstname\\E$") || firstNameRegex.equals("^\\QTestFirstName\\E$")) {
+                return expected;
+            } else {
+                return Collections.emptyList();
+            }
+        });
         //WHEN
-        List<PropertyInsurance> actual = insuranceSearchService.searchPropertyInsuranceByName("TestFirstName", null);
+        List<PropertyInsurance> actualUpperCase = insuranceSearchService.searchPropertyInsuranceByName("TESTFIRSTNAME", null);
+        List<PropertyInsurance> actualLowerCase = insuranceSearchService.searchPropertyInsuranceByName("testfirstname", null);
+        List<PropertyInsurance> actualMixedCase = insuranceSearchService.searchPropertyInsuranceByName("TestFirstName", null);
         //THEN
-        verify(mockPropertyInsuranceRepo).findByFirstName("TestFirstName");
-        assertEquals(expected, actual);
+        verify(mockPropertyInsuranceRepo).findByFirstName("^\\QTESTFIRSTNAME\\E$");
+        verify(mockPropertyInsuranceRepo).findByFirstName("^\\Qtestfirstname\\E$");
+        verify(mockPropertyInsuranceRepo).findByFirstName("^\\QTestFirstName\\E$");
+        assertEquals(expected, actualUpperCase);
+        assertEquals(expected, actualLowerCase);
+        assertEquals(expected, actualMixedCase);
     }
 
     @Test
@@ -192,12 +249,25 @@ class InsuranceSearchServiceTest {
                 .build();
 
         List<PropertyInsurance> expected = List.of(propertyInsurance);
-        when(mockPropertyInsuranceRepo.findByFamilyName("TestFamilyName")).thenReturn(expected);
+        when(mockPropertyInsuranceRepo.findByFamilyName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String familyNameRegex = invocation.getArgument(0);
+            if (familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$") || familyNameRegex.equals("^\\Qtestfamilyname\\E$") || familyNameRegex.equals("^\\QTestFamilyName\\E$")) {
+                return expected;
+            } else {
+                return Collections.emptyList();
+            }
+        });
         //WHEN
-        List<PropertyInsurance> actual = insuranceSearchService.searchPropertyInsuranceByName(null, "TestFamilyName");
+        List<PropertyInsurance> actualUpperCase = insuranceSearchService.searchPropertyInsuranceByName(null, "TESTFAMILYNAME");
+        List<PropertyInsurance> actualLowerCase = insuranceSearchService.searchPropertyInsuranceByName(null, "testfamilyname");
+        List<PropertyInsurance> actualMixedCase = insuranceSearchService.searchPropertyInsuranceByName(null, "TestFamilyName");
         //THEN
-        verify(mockPropertyInsuranceRepo).findByFamilyName("TestFamilyName");
-        assertEquals(expected, actual);
+        verify(mockPropertyInsuranceRepo).findByFamilyName("^\\QTESTFAMILYNAME\\E$");
+        verify(mockPropertyInsuranceRepo).findByFamilyName("^\\Qtestfamilyname\\E$");
+        verify(mockPropertyInsuranceRepo).findByFamilyName("^\\QTestFamilyName\\E$");
+        assertEquals(expected, actualUpperCase);
+        assertEquals(expected, actualLowerCase);
+        assertEquals(expected, actualMixedCase);
     }
 
     @Test
@@ -223,12 +293,29 @@ class InsuranceSearchServiceTest {
                 .build();
 
         List<PropertyInsurance> expected = List.of(propertyInsurance);
-        when(mockPropertyInsuranceRepo.findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName")).thenReturn(expected);
+        when(mockPropertyInsuranceRepo.findByFirstNameAndFamilyName(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+                .thenAnswer(invocation -> {
+                    String firstNameRegex = invocation.getArgument(0);
+                    String familyNameRegex = invocation.getArgument(1);
+                    if ((firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") && familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$")) ||
+                            (firstNameRegex.equals("^\\Qtestfirstname\\E$") && familyNameRegex.equals("^\\Qtestfamilyname\\E$")) ||
+                            (firstNameRegex.equals("^\\QTestFirstName\\E$") && familyNameRegex.equals("^\\QTestFamilyName\\E$"))) {
+                        return expected;
+                    } else {
+                        return Collections.emptyList();
+                    }
+                });
         //WHEN
-        List<PropertyInsurance> actual = insuranceSearchService.searchPropertyInsuranceByName("TestFirstName", "TestFamilyName");
+        List<PropertyInsurance> actualUpperCase = insuranceSearchService.searchPropertyInsuranceByName("TESTFIRSTNAME", "TESTFAMILYNAME");
+        List<PropertyInsurance> actualLowerCase = insuranceSearchService.searchPropertyInsuranceByName("testfirstname", "testfamilyname");
+        List<PropertyInsurance> actualMixedCase = insuranceSearchService.searchPropertyInsuranceByName("TestFirstName", "TestFamilyName");
         //THEN
-        verify(mockPropertyInsuranceRepo).findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName");
-        assertEquals(expected, actual);
+        verify(mockPropertyInsuranceRepo).findByFirstNameAndFamilyName("^\\QTESTFIRSTNAME\\E$", "^\\QTESTFAMILYNAME\\E$");
+        verify(mockPropertyInsuranceRepo).findByFirstNameAndFamilyName("^\\Qtestfirstname\\E$", "^\\Qtestfamilyname\\E$");
+        verify(mockPropertyInsuranceRepo).findByFirstNameAndFamilyName("^\\QTestFirstName\\E$", "^\\QTestFamilyName\\E$");
+        assertEquals(expected, actualUpperCase);
+        assertEquals(expected, actualLowerCase);
+        assertEquals(expected, actualMixedCase);
     }
 
     @Test
@@ -266,12 +353,25 @@ class InsuranceSearchServiceTest {
                 .build();
 
         List<VehicleInsurance> expected = List.of(vehicleInsurance);
-        when(mockVehicleInsuranceRepo.findByFirstName("TestFirstName")).thenReturn(expected);
+        when(mockVehicleInsuranceRepo.findByFirstName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String firstNameRegex = invocation.getArgument(0);
+            if (firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") || firstNameRegex.equals("^\\Qtestfirstname\\E$") || firstNameRegex.equals("^\\QTestFirstName\\E$")) {
+                return expected;
+            } else {
+                return Collections.emptyList();
+            }
+        });
         //WHEN
-        List<VehicleInsurance> actual = insuranceSearchService.searchVehicleInsuranceByName("TestFirstName", null);
+        List<VehicleInsurance> actualUpperCase = insuranceSearchService.searchVehicleInsuranceByName("TESTFIRSTNAME", null);
+        List<VehicleInsurance> actualLowerCase = insuranceSearchService.searchVehicleInsuranceByName("testfirstname", null);
+        List<VehicleInsurance> actualMixedCase = insuranceSearchService.searchVehicleInsuranceByName("TestFirstName", null);
         //THEN
-        verify(mockVehicleInsuranceRepo).findByFirstName("TestFirstName");
-        assertEquals(expected, actual);
+        verify(mockVehicleInsuranceRepo).findByFirstName("^\\QTESTFIRSTNAME\\E$");
+        verify(mockVehicleInsuranceRepo).findByFirstName("^\\Qtestfirstname\\E$");
+        verify(mockVehicleInsuranceRepo).findByFirstName("^\\QTestFirstName\\E$");
+        assertEquals(expected, actualUpperCase);
+        assertEquals(expected, actualLowerCase);
+        assertEquals(expected, actualMixedCase);
     }
 
     @Test
@@ -298,12 +398,25 @@ class InsuranceSearchServiceTest {
                 .build();
 
         List<VehicleInsurance> expected = List.of(vehicleInsurance);
-        when(mockVehicleInsuranceRepo.findByFamilyName("TestFamilyName")).thenReturn(expected);
+        when(mockVehicleInsuranceRepo.findByFamilyName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String familyNameRegex = invocation.getArgument(0);
+            if (familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$") || familyNameRegex.equals("^\\Qtestfamilyname\\E$") || familyNameRegex.equals("^\\QTestFamilyName\\E$")) {
+                return expected;
+            } else {
+                return Collections.emptyList();
+            }
+        });
         //WHEN
-        List<VehicleInsurance> actual = insuranceSearchService.searchVehicleInsuranceByName(null, "TestFamilyName");
+        List<VehicleInsurance> actualUpperCase = insuranceSearchService.searchVehicleInsuranceByName(null, "TESTFAMILYNAME");
+        List<VehicleInsurance> actualLowerCase = insuranceSearchService.searchVehicleInsuranceByName(null, "testfamilyname");
+        List<VehicleInsurance> actualMixedCase = insuranceSearchService.searchVehicleInsuranceByName(null, "TestFamilyName");
         //THEN
-        verify(mockVehicleInsuranceRepo).findByFamilyName("TestFamilyName");
-        assertEquals(expected, actual);
+        verify(mockVehicleInsuranceRepo).findByFamilyName("^\\QTESTFAMILYNAME\\E$");
+        verify(mockVehicleInsuranceRepo).findByFamilyName("^\\Qtestfamilyname\\E$");
+        verify(mockVehicleInsuranceRepo).findByFamilyName("^\\QTestFamilyName\\E$");
+        assertEquals(expected, actualUpperCase);
+        assertEquals(expected, actualLowerCase);
+        assertEquals(expected, actualMixedCase);
     }
 
     @Test
@@ -330,12 +443,29 @@ class InsuranceSearchServiceTest {
                 .build();
 
         List<VehicleInsurance> expected = List.of(vehicleInsurance);
-        when(mockVehicleInsuranceRepo.findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName")).thenReturn(expected);
+        when(mockVehicleInsuranceRepo.findByFirstNameAndFamilyName(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+                .thenAnswer(invocation -> {
+                    String firstNameRegex = invocation.getArgument(0);
+                    String familyNameRegex = invocation.getArgument(1);
+                    if ((firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") && familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$")) ||
+                            (firstNameRegex.equals("^\\Qtestfirstname\\E$") && familyNameRegex.equals("^\\Qtestfamilyname\\E$")) ||
+                            (firstNameRegex.equals("^\\QTestFirstName\\E$") && familyNameRegex.equals("^\\QTestFamilyName\\E$"))) {
+                        return expected;
+                    } else {
+                        return Collections.emptyList();
+                    }
+                });
         //WHEN
-        List<VehicleInsurance> actual = insuranceSearchService.searchVehicleInsuranceByName("TestFirstName", "TestFamilyName");
+        List<VehicleInsurance> actualUpperCase = insuranceSearchService.searchVehicleInsuranceByName("TESTFIRSTNAME", "TESTFAMILYNAME");
+        List<VehicleInsurance> actualLowerCase = insuranceSearchService.searchVehicleInsuranceByName("testfirstname", "testfamilyname");
+        List<VehicleInsurance> actualMixedCase = insuranceSearchService.searchVehicleInsuranceByName("TestFirstName", "TestFamilyName");
         //THEN
-        verify(mockVehicleInsuranceRepo).findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName");
-        assertEquals(expected, actual);
+        verify(mockVehicleInsuranceRepo).findByFirstNameAndFamilyName("^\\QTESTFIRSTNAME\\E$", "^\\QTESTFAMILYNAME\\E$");
+        verify(mockVehicleInsuranceRepo).findByFirstNameAndFamilyName("^\\Qtestfirstname\\E$", "^\\Qtestfamilyname\\E$");
+        verify(mockVehicleInsuranceRepo).findByFirstNameAndFamilyName("^\\QTestFirstName\\E$", "^\\QTestFamilyName\\E$");
+        assertEquals(expected, actualUpperCase);
+        assertEquals(expected, actualLowerCase);
+        assertEquals(expected, actualMixedCase);
     }
 
     @Test
@@ -449,18 +579,50 @@ class InsuranceSearchServiceTest {
         List<PropertyInsurance> expectedPropertyInsurances = List.of(propertyInsurance);
         List<VehicleInsurance> expectedVehicleInsurances = List.of(vehicleInsurance);
 
-        when(mockLifeInsuranceRepo.findByFirstName("TestFirstName")).thenReturn(expectedLifeInsurances);
-        when(mockPropertyInsuranceRepo.findByFirstName("TestFirstName")).thenReturn(expectedPropertyInsurances);
-        when(mockVehicleInsuranceRepo.findByFirstName("TestFirstName")).thenReturn(expectedVehicleInsurances);
+        when(mockLifeInsuranceRepo.findByFirstName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String firstNameRegex = invocation.getArgument(0);
+            if (firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") || firstNameRegex.equals("^\\Qtestfirstname\\E$") || firstNameRegex.equals("^\\QTestFirstName\\E$")) {
+                return expectedLifeInsurances;
+            } else {
+                return Collections.emptyList();
+            }
+        });
+        when(mockPropertyInsuranceRepo.findByFirstName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String firstNameRegex = invocation.getArgument(0);
+            if (firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") || firstNameRegex.equals("^\\Qtestfirstname\\E$") || firstNameRegex.equals("^\\QTestFirstName\\E$")) {
+                return expectedPropertyInsurances;
+            } else {
+                return Collections.emptyList();
+            }
+        });
+        when(mockVehicleInsuranceRepo.findByFirstName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String firstNameRegex = invocation.getArgument(0);
+            if (firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") || firstNameRegex.equals("^\\Qtestfirstname\\E$") || firstNameRegex.equals("^\\QTestFirstName\\E$")) {
+                return expectedVehicleInsurances;
+            } else {
+                return Collections.emptyList();
+            }
+        });
         //WHEN
-        AllInsurancesResponse actual = insuranceSearchService.searchAllInsurancesByName("TestFirstName", null);
+        AllInsurancesResponse actualUpperCase = insuranceSearchService.searchAllInsurancesByName("TESTFIRSTNAME", null);
+        AllInsurancesResponse actualLowerCase = insuranceSearchService.searchAllInsurancesByName("testfirstname", null);
+        AllInsurancesResponse actualMixedCase = insuranceSearchService.searchAllInsurancesByName("TestFirstName", null);
         //THEN
-        verify(mockLifeInsuranceRepo).findByFirstName("TestFirstName");
-        verify(mockPropertyInsuranceRepo).findByFirstName("TestFirstName");
-        verify(mockVehicleInsuranceRepo).findByFirstName("TestFirstName");
-        assertEquals(expectedLifeInsurances, actual.lifeInsurances());
-        assertEquals(expectedPropertyInsurances, actual.propertyInsurances());
-        assertEquals(expectedVehicleInsurances, actual.vehicleInsurances());
+        verify(mockLifeInsuranceRepo, times(3)).findByFirstName(anyString());
+        verify(mockPropertyInsuranceRepo, times(3)).findByFirstName(anyString());
+        verify(mockVehicleInsuranceRepo, times(3)).findByFirstName(anyString());
+
+        assertEquals(expectedLifeInsurances, actualUpperCase.lifeInsurances());
+        assertEquals(expectedPropertyInsurances, actualUpperCase.propertyInsurances());
+        assertEquals(expectedVehicleInsurances, actualUpperCase.vehicleInsurances());
+
+        assertEquals(expectedLifeInsurances, actualLowerCase.lifeInsurances());
+        assertEquals(expectedPropertyInsurances, actualLowerCase.propertyInsurances());
+        assertEquals(expectedVehicleInsurances, actualLowerCase.vehicleInsurances());
+
+        assertEquals(expectedLifeInsurances, actualMixedCase.lifeInsurances());
+        assertEquals(expectedPropertyInsurances, actualMixedCase.propertyInsurances());
+        assertEquals(expectedVehicleInsurances, actualMixedCase.vehicleInsurances());
     }
 
     @Test
@@ -527,18 +689,50 @@ class InsuranceSearchServiceTest {
         List<PropertyInsurance> expectedPropertyInsurances = List.of(propertyInsurance);
         List<VehicleInsurance> expectedVehicleInsurances = List.of(vehicleInsurance);
 
-        when(mockLifeInsuranceRepo.findByFamilyName("TestFamilyName")).thenReturn(expectedLifeInsurances);
-        when(mockPropertyInsuranceRepo.findByFamilyName("TestFamilyName")).thenReturn(expectedPropertyInsurances);
-        when(mockVehicleInsuranceRepo.findByFamilyName("TestFamilyName")).thenReturn(expectedVehicleInsurances);
+        when(mockLifeInsuranceRepo.findByFamilyName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String familyNameRegex = invocation.getArgument(0);
+            if (familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$") || familyNameRegex.equals("^\\Qtestfamilyname\\E$") || familyNameRegex.equals("^\\QTestFamilyName\\E$")) {
+                return expectedLifeInsurances;
+            } else {
+                return Collections.emptyList();
+            }
+        });
+        when(mockPropertyInsuranceRepo.findByFamilyName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String familyNameRegex = invocation.getArgument(0);
+            if (familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$") || familyNameRegex.equals("^\\Qtestfamilyname\\E$") || familyNameRegex.equals("^\\QTestFamilyName\\E$")) {
+                return expectedPropertyInsurances;
+            } else {
+                return Collections.emptyList();
+            }
+        });
+        when(mockVehicleInsuranceRepo.findByFamilyName(ArgumentMatchers.anyString())).thenAnswer(invocation -> {
+            String familyNameRegex = invocation.getArgument(0);
+            if (familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$") || familyNameRegex.equals("^\\Qtestfamilyname\\E$") || familyNameRegex.equals("^\\QTestFamilyName\\E$")) {
+                return expectedVehicleInsurances;
+            } else {
+                return Collections.emptyList();
+            }
+        });
         //WHEN
-        AllInsurancesResponse actual = insuranceSearchService.searchAllInsurancesByName(null, "TestFamilyName");
+        AllInsurancesResponse actualUpperCase = insuranceSearchService.searchAllInsurancesByName(null, "TESTFAMILYNAME");
+        AllInsurancesResponse actualLowerCase = insuranceSearchService.searchAllInsurancesByName(null, "testfamilyname");
+        AllInsurancesResponse actualMixedCase = insuranceSearchService.searchAllInsurancesByName(null, "TestFamilyName");
         //THEN
-        verify(mockLifeInsuranceRepo).findByFamilyName("TestFamilyName");
-        verify(mockPropertyInsuranceRepo).findByFamilyName("TestFamilyName");
-        verify(mockVehicleInsuranceRepo).findByFamilyName("TestFamilyName");
-        assertEquals(expectedLifeInsurances, actual.lifeInsurances());
-        assertEquals(expectedPropertyInsurances, actual.propertyInsurances());
-        assertEquals(expectedVehicleInsurances, actual.vehicleInsurances());
+        verify(mockLifeInsuranceRepo, times(3)).findByFamilyName(anyString());
+        verify(mockPropertyInsuranceRepo, times(3)).findByFamilyName(anyString());
+        verify(mockVehicleInsuranceRepo, times(3)).findByFamilyName(anyString());
+
+        assertEquals(expectedLifeInsurances, actualUpperCase.lifeInsurances());
+        assertEquals(expectedPropertyInsurances, actualUpperCase.propertyInsurances());
+        assertEquals(expectedVehicleInsurances, actualUpperCase.vehicleInsurances());
+
+        assertEquals(expectedLifeInsurances, actualLowerCase.lifeInsurances());
+        assertEquals(expectedPropertyInsurances, actualLowerCase.propertyInsurances());
+        assertEquals(expectedVehicleInsurances, actualLowerCase.vehicleInsurances());
+
+        assertEquals(expectedLifeInsurances, actualMixedCase.lifeInsurances());
+        assertEquals(expectedPropertyInsurances, actualMixedCase.propertyInsurances());
+        assertEquals(expectedVehicleInsurances, actualMixedCase.vehicleInsurances());
     }
 
     @Test
@@ -605,17 +799,61 @@ class InsuranceSearchServiceTest {
         List<PropertyInsurance> expectedPropertyInsurances = List.of(propertyInsurance);
         List<VehicleInsurance> expectedVehicleInsurances = List.of(vehicleInsurance);
 
-        when(mockLifeInsuranceRepo.findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName")).thenReturn(expectedLifeInsurances);
-        when(mockPropertyInsuranceRepo.findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName")).thenReturn(expectedPropertyInsurances);
-        when(mockVehicleInsuranceRepo.findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName")).thenReturn(expectedVehicleInsurances);
+        when(mockLifeInsuranceRepo.findByFirstNameAndFamilyName(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+                .thenAnswer(invocation -> {
+                    String firstNameRegex = invocation.getArgument(0);
+                    String familyNameRegex = invocation.getArgument(1);
+                    if ((firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") && familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$")) ||
+                            (firstNameRegex.equals("^\\Qtestfirstname\\E$") && familyNameRegex.equals("^\\Qtestfamilyname\\E$")) ||
+                            (firstNameRegex.equals("^\\QTestFirstName\\E$") && familyNameRegex.equals("^\\QTestFamilyName\\E$"))) {
+                        return expectedLifeInsurances;
+                    } else {
+                        return Collections.emptyList();
+                    }
+                });
+        when(mockPropertyInsuranceRepo.findByFirstNameAndFamilyName(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+                .thenAnswer(invocation -> {
+                    String firstNameRegex = invocation.getArgument(0);
+                    String familyNameRegex = invocation.getArgument(1);
+                    if ((firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") && familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$")) ||
+                            (firstNameRegex.equals("^\\Qtestfirstname\\E$") && familyNameRegex.equals("^\\Qtestfamilyname\\E$")) ||
+                            (firstNameRegex.equals("^\\QTestFirstName\\E$") && familyNameRegex.equals("^\\QTestFamilyName\\E$"))) {
+                        return expectedPropertyInsurances;
+                    } else {
+                        return Collections.emptyList();
+                    }
+                });
+        when(mockVehicleInsuranceRepo.findByFirstNameAndFamilyName(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+                .thenAnswer(invocation -> {
+                    String firstNameRegex = invocation.getArgument(0);
+                    String familyNameRegex = invocation.getArgument(1);
+                    if ((firstNameRegex.equals("^\\QTESTFIRSTNAME\\E$") && familyNameRegex.equals("^\\QTESTFAMILYNAME\\E$")) ||
+                            (firstNameRegex.equals("^\\Qtestfirstname\\E$") && familyNameRegex.equals("^\\Qtestfamilyname\\E$")) ||
+                            (firstNameRegex.equals("^\\QTestFirstName\\E$") && familyNameRegex.equals("^\\QTestFamilyName\\E$"))) {
+                        return expectedVehicleInsurances;
+                    } else {
+                        return Collections.emptyList();
+                    }
+                });
         //WHEN
-        AllInsurancesResponse actual = insuranceSearchService.searchAllInsurancesByName("TestFirstName", "TestFamilyName");
+        AllInsurancesResponse actualUpperCase = insuranceSearchService.searchAllInsurancesByName("TESTFIRSTNAME", "TESTFAMILYNAME");
+        AllInsurancesResponse actualLowerCase = insuranceSearchService.searchAllInsurancesByName("testfirstname", "testfamilyname");
+        AllInsurancesResponse actualMixedCase = insuranceSearchService.searchAllInsurancesByName("TestFirstName", "TestFamilyName");
         //THEN
-        verify(mockLifeInsuranceRepo).findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName");
-        verify(mockPropertyInsuranceRepo).findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName");
-        verify(mockVehicleInsuranceRepo).findByFirstNameAndFamilyName("TestFirstName", "TestFamilyName");
-        assertEquals(expectedLifeInsurances, actual.lifeInsurances());
-        assertEquals(expectedPropertyInsurances, actual.propertyInsurances());
-        assertEquals(expectedVehicleInsurances, actual.vehicleInsurances());
+        verify(mockLifeInsuranceRepo, times(3)).findByFirstNameAndFamilyName(anyString(), anyString());
+        verify(mockPropertyInsuranceRepo, times(3)).findByFirstNameAndFamilyName(anyString(), anyString());
+        verify(mockVehicleInsuranceRepo, times(3)).findByFirstNameAndFamilyName(anyString(), anyString());
+
+        assertEquals(expectedLifeInsurances, actualUpperCase.lifeInsurances());
+        assertEquals(expectedPropertyInsurances, actualUpperCase.propertyInsurances());
+        assertEquals(expectedVehicleInsurances, actualUpperCase.vehicleInsurances());
+
+        assertEquals(expectedLifeInsurances, actualLowerCase.lifeInsurances());
+        assertEquals(expectedPropertyInsurances, actualLowerCase.propertyInsurances());
+        assertEquals(expectedVehicleInsurances, actualLowerCase.vehicleInsurances());
+
+        assertEquals(expectedLifeInsurances, actualMixedCase.lifeInsurances());
+        assertEquals(expectedPropertyInsurances, actualMixedCase.propertyInsurances());
+        assertEquals(expectedVehicleInsurances, actualMixedCase.vehicleInsurances());
     }
 }
