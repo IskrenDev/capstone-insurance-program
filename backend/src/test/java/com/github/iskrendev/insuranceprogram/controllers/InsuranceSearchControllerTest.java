@@ -91,7 +91,19 @@ class InsuranceSearchControllerTest {
 
         String expectedAsJson = objectMapper.writeValueAsString(expected);
         mockMvc.perform(get(BASE_URI)
-                        .param("firstName", lifeInsurance.firstName())
+                        .param("firstName", "TESTFIRSTNAME")
+                        .param("type", "life"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedAsJson));
+
+        mockMvc.perform(get(BASE_URI)
+                        .param("firstName", "testfirstname")
+                        .param("type", "life"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedAsJson));
+
+        mockMvc.perform(get(BASE_URI)
+                        .param("firstName", "TestFirstName")
                         .param("type", "life"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedAsJson));
@@ -123,7 +135,19 @@ class InsuranceSearchControllerTest {
 
         String expectedAsJson = objectMapper.writeValueAsString(expected);
         mockMvc.perform(get(BASE_URI)
-                        .param("familyName", lifeInsurance.familyName())
+                        .param("familyName", "TESTFAMILYNAME")
+                        .param("type", "life"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedAsJson));
+
+        mockMvc.perform(get(BASE_URI)
+                        .param("familyName", "testfamilyname")
+                        .param("type", "life"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedAsJson));
+
+        mockMvc.perform(get(BASE_URI)
+                        .param("familyName", "TestFamilyName")
                         .param("type", "life"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedAsJson));
@@ -155,8 +179,22 @@ class InsuranceSearchControllerTest {
 
         String expectedAsJson = objectMapper.writeValueAsString(expected);
         mockMvc.perform(get(BASE_URI)
-                        .param("firstName", lifeInsurance.firstName())
-                        .param("familyName", lifeInsurance.familyName())
+                        .param("firstName", "TESTFIRSTNAME")
+                        .param("familyName", "TESTFAMILYNAME")
+                        .param("type", "life"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedAsJson));
+
+        mockMvc.perform(get(BASE_URI)
+                        .param("firstName", "testfirstname")
+                        .param("familyName", "testfamilyname")
+                        .param("type", "life"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedAsJson));
+
+        mockMvc.perform(get(BASE_URI)
+                        .param("firstName", "TestFirstName")
+                        .param("familyName", "TestFamilyName")
                         .param("type", "life"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedAsJson));
@@ -236,6 +274,18 @@ class InsuranceSearchControllerTest {
         vehicleInsuranceRepo.save(vehicleInsurance);
 
         String expectedAsJson = objectMapper.writeValueAsString(expectedResponse);
+
+        mockMvc.perform(get(BASE_URI)
+                        .param("firstName", "TESTFIRSTNAME")
+                        .param("type", "all"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedAsJson));
+
+        mockMvc.perform(get(BASE_URI)
+                        .param("firstName", "testfirstname")
+                        .param("type", "all"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedAsJson));
 
         mockMvc.perform(get(BASE_URI)
                         .param("firstName", "TestFirstName")
