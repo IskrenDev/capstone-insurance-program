@@ -26,6 +26,8 @@ export type Insurance = {
 export type FormLabelProps = {
     label: string;
     name: string;
+    className?: string;
+    showLabel?: boolean;
     value?: string | number | readonly string[]
     handleOnChangeNumber?: (v: number) => void;
     handleOnChangeText?: (v: string) => void;
