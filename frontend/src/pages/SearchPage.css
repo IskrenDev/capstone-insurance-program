@@ -1,0 +1,76 @@
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 75px;
+}
+
+.search-container input,
+.search-container .insurance-dropdown {
+    padding: 10px 26px 10px 10px;
+    box-sizing: border-box;
+}
+
+.search-container input[name="type"] {
+    display: none;
+}
+
+.search-container input {
+    width: 400px;
+}
+
+.search-icon-button {
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+    padding: 10px;
+    margin-left: -44px;
+    height: 34px;
+    width: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-icon-button:hover,
+.search-icon-button:focus {
+    outline: none;
+}
+
+.table-results {
+    width: 100%;
+    margin-top: 40px;
+    border: 1px solid #242424;
+    border-collapse: collapse;
+}
+
+.table-results a {
+    color: #003d0f;
+    text-decoration: none;
+}
+
+.table-results a:hover {
+    color: #008379
+}
+
+.table-results th,
+.table-results td {
+    border: 1px solid #242424;
+    padding: 8px;
+    text-align: left;
+}
+
+.table-results th {
+    background: #b9b9b9;
+}
+
+.table-results th:nth-child(1),
+.table-results td:nth-child(1) {
+    width: 75%;
+}
+
+.table-results th:nth-child(2),
+.table-results td:nth-child(2) {
+    width: 25%;
+}
