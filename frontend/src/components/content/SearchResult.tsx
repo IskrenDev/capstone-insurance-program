@@ -1,11 +1,10 @@
 import "../../pages/SharedComponents.css";
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {Link} from 'react-router-dom';
-import {Insurance, SearchResultProps} from "../../types/types.ts";
+import {SearchResultProps} from "../../types/types.ts";
 
 function SearchResult(props: Readonly<SearchResultProps>) {
     const [isAscending, setIsAscending] = useState(true);
-    const [sortedResults, setSortedResults] = useState<Insurance[]>(props.results);
 
     const resultOptions = [
         {value: "LIFE", label: "Lebensversicherung"},
@@ -13,11 +12,9 @@ function SearchResult(props: Readonly<SearchResultProps>) {
         {value: "VEHICLE", label: "Kfz-Versicherung"},
     ];
 
-    useEffect(() => {
-        setSortedResults(props.results.sort((a, b) =>
-            isAscending ? a.firstName.localeCompare(b.firstName) : b.firstName.localeCompare(a.firstName)
-        ));
-    }, [props.results, isAscending]);
+    const sortedResults = [...props.results].sort((a, b) =>
+        isAscending ? a.firstName.localeCompare(b.firstName) : b.firstName.localeCompare(a.firstName)
+    );
 
     const handleSortClick = () => {
         setIsAscending(!isAscending);
