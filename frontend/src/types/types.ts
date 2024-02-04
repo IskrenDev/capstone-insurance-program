@@ -62,3 +62,7 @@ export type AllInsurancesResponse = {
     propertyInsurances: Insurance[];
     vehicleInsurances: Insurance[];
 };
+
+export type SearchResultProps = {
+    results: Insurance[];
+};
