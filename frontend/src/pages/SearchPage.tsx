@@ -1,11 +1,11 @@
 import "./SharedComponents.css";
 import "./SearchPage.css";
-import React, {useState} from 'react';
-import {Link} from "react-router-dom";
+import {useState} from 'react';
 import axios from "axios";
 import {Insurance} from "../types/types.ts";
 import SearchIcon from "../components/svg/SearchIcon.tsx";
 import FormLabel from "../components/content/FormLabel.tsx";
+import SearchResult from "../components/content/SearchResult.tsx";
 
 function SearchPage() {
     const [type, setType] = useState("ALL");
@@ -77,11 +77,6 @@ function SearchPage() {
         searchInsurance();
     };
 
-    const getLabelByType = (type: string) => {
-        const option = typeOptions.find(option => option.value === type.toUpperCase());
-        return option ? option.label : "Unbekannter Typ";
-    };
-
     return (
         <div>
             <h2>Versicherung suchen</h2>
@@ -90,7 +85,7 @@ function SearchPage() {
                     <div className="search-container">
                         <input
                             type="text"
-                            placeholder="Bitte Kundenname eingeben..."
+                            placeholder="Bitte Kundennamen eingeben..."
                             value={name}
                             onChange={e => setName(e.target.value)}
                             required
@@ -109,31 +104,7 @@ function SearchPage() {
                         />
                     </div>
                 </form>
-                {searchPerformed && (searchResults.length > 0 ? (
-                        <table className="table-results">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Versicherungsart</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {searchResults.map((insurance) => (
-                                <tr key={insurance.id}>
-                                    <td>
-                                        <Link to={`/details/${insurance.type.toLowerCase()}/${insurance.id}`}>
-                                            {insurance.firstName} {insurance.familyName}
-                                        </Link>
-                                    </td>
-                                    <td>{getLabelByType(insurance.type)}</td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-                    ) : (
-                        <p>Es wurden keine Versicherungen gefunden.</p>
-                    )
-                )}
+                {searchPerformed && <SearchResult results={searchResults}/>}
             </div>
         </div>
     );
