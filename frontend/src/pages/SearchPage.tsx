@@ -2,7 +2,7 @@ import "./SharedComponents.css";
 import "./SearchPage.css";
 import {useState} from 'react';
 import axios from "axios";
-import {Insurance} from "../types/types.ts";
+import {Insurance, AllInsurancesResponse} from "../types/types.ts";
 import SearchIcon from "../components/svg/SearchIcon.tsx";
 import FormLabel from "../components/content/FormLabel.tsx";
 import SearchResult from "../components/content/SearchResult.tsx";
@@ -21,45 +21,51 @@ function SearchPage() {
     ];
 
     async function searchInsurance() {
-        const trimmedName = name.trim();
-        if (!trimmedName) {
+        if (!name.trim()) {
             console.log("No search query provided.");
             return;
         }
 
         let searchEndpoint = "/api/search?";
-        const names = name.trim().split(/\s+/);
-        let results = [];
-
         if (type !== "ALL") {
-            if (names.length > 1) {
-                searchEndpoint += `type=${type.toLowerCase()}&firstName=${encodeURIComponent(names[0])}&familyName=${encodeURIComponent(names.slice(1).join(' '))}`;
-            } else if (names.length === 1) {
-                searchEndpoint += `type=${type.toLowerCase()}&firstName=${encodeURIComponent(names[0])}`;
-                const firstNameResults = await performSearch(searchEndpoint);
-                if (!firstNameResults.length) {
-                    searchEndpoint = `/api/search?type=${type.toLowerCase()}&familyName=${encodeURIComponent(names[0])}`;
-                }
-            }
-            results = await performSearch(searchEndpoint);
+            searchEndpoint += `type=${encodeURIComponent(type.toLowerCase())}&`;
+        }
+
+        const names = name.trim().split(/\s+/);
+        if (names.length > 1) {
+            searchEndpoint += `firstName=${encodeURIComponent(names[0])}&familyName=${encodeURIComponent(names.slice(1).join(' '))}`;
         } else {
-            if (names.length > 1) {
-                searchEndpoint += `firstName=${encodeURIComponent(names[0])}&familyName=${encodeURIComponent(names.slice(1).join(' '))}`;
-            } else if (names.length === 1) {
-                searchEndpoint += `firstName=${encodeURIComponent(names[0])}`;
-                const firstNameResults = await performSearch(searchEndpoint);
-                if (!firstNameResults.lifeInsurances.length && !firstNameResults.propertyInsurances.length && !firstNameResults.vehicleInsurances.length) {
+            searchEndpoint += `firstName=${encodeURIComponent(names[0])}`;
+            const firstNameResults = await performSearch(searchEndpoint);
+            if (type === "ALL") {
+                if (isEmptyResults(firstNameResults)) {
                     searchEndpoint = `/api/search?familyName=${encodeURIComponent(names[0])}`;
+                } else {
+                    setSearchResults(processResults(firstNameResults));
+                    setSearchPerformed(true);
+                    return;
                 }
-            }
-            results = await performSearch(searchEndpoint);
-            if (results.lifeInsurances || results.propertyInsurances || results.vehicleInsurances) {
-                results = [...results.lifeInsurances, ...results.propertyInsurances, ...results.vehicleInsurances];
+            } else {
+                if (isEmptyResults(firstNameResults)) {
+                    searchEndpoint = `/api/search?type=${encodeURIComponent(type.toLowerCase())}&familyName=${encodeURIComponent(names[0])}`;
+                }
             }
         }
 
-        setSearchResults(results);
+        const results = await performSearch(searchEndpoint);
+        setSearchResults(processResults(results));
         setSearchPerformed(true);
+    }
+
+    function isEmptyResults(results: { [key: string]: Insurance[] }) {
+        return !results || Object.values(results).every((arr: Insurance[]) => arr.length === 0);
+    }
+
+    function processResults(results: AllInsurancesResponse | null) {
+        if (results) {
+            return [...results.lifeInsurances, ...results.propertyInsurances, ...results.vehicleInsurances];
+        }
+        return [];
     }
 
     async function performSearch(endpoint: string) {

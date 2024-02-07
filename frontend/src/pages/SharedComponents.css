@@ -160,6 +160,10 @@
     display: flex;
 }
 
+.flex-container .sort-icon-button {
+    margin-left: 5px;
+}
+
 .sort-icon-button {
     background: none;
     border: none;
