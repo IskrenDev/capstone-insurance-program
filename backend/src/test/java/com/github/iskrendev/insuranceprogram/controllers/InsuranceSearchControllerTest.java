@@ -86,10 +86,17 @@ class InsuranceSearchControllerTest {
                 .healthConditionDetails("")
                 .build();
 
-        List<LifeInsurance> expected = List.of(lifeInsurance);
+        List<LifeInsurance> expectedLifeInsurances = List.of(lifeInsurance);
+
+        AllInsurancesResponse expectedResponse = new AllInsurancesResponse(
+                expectedLifeInsurances,
+                List.of(),
+                List.of());
+
         lifeInsuranceRepo.save(lifeInsurance);
 
-        String expectedAsJson = objectMapper.writeValueAsString(expected);
+        String expectedAsJson = objectMapper.writeValueAsString(expectedResponse);
+
         mockMvc.perform(get(BASE_URI)
                         .param("firstName", "TESTFIRSTNAME")
                         .param("type", "life"))
@@ -130,10 +137,17 @@ class InsuranceSearchControllerTest {
                 .healthConditionDetails("")
                 .build();
 
-        List<LifeInsurance> expected = List.of(lifeInsurance);
+        List<LifeInsurance> expectedLifeInsurances = List.of(lifeInsurance);
+
+        AllInsurancesResponse expectedResponse = new AllInsurancesResponse(
+                expectedLifeInsurances,
+                List.of(),
+                List.of());
+
         lifeInsuranceRepo.save(lifeInsurance);
 
-        String expectedAsJson = objectMapper.writeValueAsString(expected);
+        String expectedAsJson = objectMapper.writeValueAsString(expectedResponse);
+
         mockMvc.perform(get(BASE_URI)
                         .param("familyName", "TESTFAMILYNAME")
                         .param("type", "life"))
@@ -174,10 +188,17 @@ class InsuranceSearchControllerTest {
                 .healthConditionDetails("")
                 .build();
 
-        List<LifeInsurance> expected = List.of(lifeInsurance);
+        List<LifeInsurance> expectedLifeInsurances = List.of(lifeInsurance);
+
+        AllInsurancesResponse expectedResponse = new AllInsurancesResponse(
+                expectedLifeInsurances,
+                List.of(),
+                List.of());
+
         lifeInsuranceRepo.save(lifeInsurance);
 
-        String expectedAsJson = objectMapper.writeValueAsString(expected);
+        String expectedAsJson = objectMapper.writeValueAsString(expectedResponse);
+
         mockMvc.perform(get(BASE_URI)
                         .param("firstName", "TESTFIRSTNAME")
                         .param("familyName", "TESTFAMILYNAME")
