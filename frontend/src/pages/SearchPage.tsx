@@ -45,10 +45,8 @@ function SearchPage() {
                     setSearchPerformed(true);
                     return;
                 }
-            } else {
-                if (isEmptyResults(firstNameResults)) {
-                    searchEndpoint = `/api/search?type=${encodeURIComponent(type.toLowerCase())}&familyName=${encodeURIComponent(names[0])}`;
-                }
+            } else if (isEmptyResults(firstNameResults) && type !== "ALL") {
+                searchEndpoint = `/api/search?type=${encodeURIComponent(type.toLowerCase())}&familyName=${encodeURIComponent(names[0])}`;
             }
         }
 

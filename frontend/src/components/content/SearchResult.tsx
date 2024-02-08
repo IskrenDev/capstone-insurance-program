@@ -33,8 +33,7 @@ function SearchResult(props: Readonly<SearchResultProps>) {
                     <tr>
                         <th>
                             <div className="flex-container">
-                                Name
-                                <button className="sort-icon-button" onClick={handleSortClick}>
+                                Name<button className="sort-icon-button" onClick={handleSortClick}>
                                     {isAscending ? (
                                         <span className="asc-icon"></span>
                                     ) : (
