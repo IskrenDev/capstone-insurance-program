@@ -75,12 +75,15 @@ function FormLabel(props: Readonly<FormLabelProps>) {
         }
     };
 
+    const shouldShowLabel = props.showLabel !== false;
+
     return (
         <div>
-            {props.label}:
+            {shouldShowLabel && <span>{props.label}: </span>}
             <label>
                 {props.options && (
                     <select
+                        className={props.className}
                         name={props.name}
                         value={props.value}
                         onChange={handleChangeSelect}

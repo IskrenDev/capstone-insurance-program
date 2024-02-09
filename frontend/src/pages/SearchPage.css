@@ -1,0 +1,39 @@
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 75px;
+}
+
+.search-container input,
+.search-container .insurance-dropdown {
+    padding: 10px 26px 10px 10px;
+    box-sizing: border-box;
+}
+
+.search-container input[name="type"] {
+    display: none;
+}
+
+.search-container input {
+    width: 400px;
+}
+
+.search-icon-button {
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+    padding: 10px;
+    margin-left: -44px;
+    height: 34px;
+    width: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-icon-button:hover,
+.search-icon-button:focus {
+    outline: none;
+}

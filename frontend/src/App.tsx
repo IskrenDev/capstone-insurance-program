@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage.tsx';
 import DetailsPage from "./pages/DetailsPage.tsx";
 import EditPage from "./pages/EditPage.tsx";
 import StatisticsPage from "./pages/StatisticsPage.tsx";
+import SearchPage from "./pages/SearchPage.tsx";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
                 <Route path={"/details/:type/:id"} element={<DetailsPage/>} />
                 <Route path={"/details/:type/:id/edit"} element={<EditPage/>} />
                 <Route path={"/insurances/statistics"} element={<StatisticsPage/>} />
+                <Route path={"/insurances/search"} element={<SearchPage/>} />
             </Routes>
         </>
     )
